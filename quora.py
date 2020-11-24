@@ -48,7 +48,16 @@ pd.set_option('max_colwidth', 800)
 LSTM_UNITS = 128
 DENSE_HIDDEN_UNITS = 4 * LSTM_UNITS
 
-train_df = pd.read_csv('quora2.csv')
+train_df = pd.read_csv('train.csv')
+
+#Split data into testing and training and convert to csv or excel files
+
+#train,test = train_test_split(train_df, test_size=0.05, random_state=0)
+#save the data
+#train.to_csv(own_dir_path +'/train.csv',index=False)
+#test.to_csv(own_dir_path +'/test.csv',index=False)
+
+
 
 print("train of columns name :::", train_df.columns)
 
@@ -72,17 +81,23 @@ def preprocess(data):
 
 train_df['question_text'] = train_df['question_text'].apply(lambda x: preprocess(x))
 
+
+
+
 # torch_text with train data
 question_text_field = torchtext.data.Field(lower=True, tokenize='spacy', sequential=True, batch_first=True)
 target_field = torchtext.data.Field(sequential=False, use_vocab=False, is_target=True)
-cid = torchtext.data.Field()
+qid_field = torchtext.data.Field()
 
-train_fields = {
-    'question_text': ('question_text', question_text_field),
-    'target': ('target', target_field)
-}
+train_fields = [
+    ('qid', None),
+    ('question_text', question_text_field),
+    ('target', target_field)
+]
 
-kfold_train_tabular_dataset = torchtext.data.TabularDataset(path= own_dir_path +'/quora2.csv',
+
+
+kfold_train_tabular_dataset = torchtext.data.TabularDataset(path= own_dir_path +'/train.csv',
                                                             format='csv',
                                                             fields=train_fields)
 
@@ -381,41 +396,60 @@ info = torch.load(own_dir_path+'/best_model.info')
 model.eval();
 print("model info:::", info)
 
-# def test_model(model):
-#     test_loader = torchtext.data.BucketIterator(dataset=kfold_test_tabular_dataset,
-#                                                 batch_size=1,
-#                                                 # sort_key=lambda x: len(x.question_text),
-#                                                 # sort_within_batch=True,
-#                                                 shuffle=False, sort=False)
 
-#     all_test_preds = []
-#     c_id = []
+test_fields = [
+    ('qid', qid_field),
+    ('question_text', question_text_field)
+]
 
-#     model.eval()
+kfold_test_tabular_dataset = torchtext.data.TabularDataset(own_dir_path+'/test.csv',
+format='csv',
+fields=test_fields)
 
-#     with torch.no_grad():
-#         for i, data in enumerate(test_loader):
-#             data_len_question_text = LongTensor(list(map(len, data.question_text)))
-#             question = data.question_text
-#             question = question.to(device)
-#             x_batch = (question)
+print("kfold test ::::", kfold_test_tabular_dataset[0].__dict__.keys())
+print("test-- dataset length of kfold tabular dataset:::::", len(kfold_test_tabular_dataset))
 
-#             y_pred = sigmoid(model(x_batch, data_len_question_text).numpy()).tolist()
-#             c_id += data.cid.view(-1).data.numpy().tolist()
-#             all_test_preds += y_pred
+#IMP :: run build vocab than check qid_field.vocab.itos
+qid_field.build_vocab(kfold_test_tabular_dataset)
 
-#     submission = pd.DataFrame.from_dict({
-#         'id': [cid.vocab.itos[i] for i in c_id],
-#         # 'id': test_df['id'][0:len(test_df)],
-#         'prediction': [i for i in all_test_preds],
-#     })
+def test_model(model):
 
-#     return submission
+    test_loader = torchtext.data.BucketIterator(dataset=kfold_test_tabular_dataset,
+                                                batch_size=BATCH_SIZE,
+                                                # sort_key=lambda x: len(x.question_text),
+                                                train=False,
+                                                sort_within_batch=False,
+                                                shuffle=False, sort=False)
+
+    all_test_preds = []
+    q_id = []
+
+    model.eval()
+
+    with torch.no_grad():
+        for i, data in enumerate(test_loader):
+            data_len_question_text = LongTensor(list(map(len, data.question_text)))
+            question = data.question_text
+            question = question.to(device)
+            x_batch = (question)
+
+            y_pred = sigmoid(model(x_batch, data_len_question_text).numpy()).tolist()
+            q_id += data.qid.view(-1).data.numpy().tolist()
+            all_test_preds += y_pred
 
 
-# submission = test_model(model)
-# print()
-# submission.to_csv(own_dir_path+"/submission.csv", index=False)
+    submission = pd.DataFrame.from_dict({
+        'id': [qid_field.vocab.itos[i] for i in q_id],
+        # 'id': test_df['id'][0:len(test_df)],
+        'prediction': [i for i in all_test_preds],
+    })
+
+    return submission
+
+
+submission = test_model(model)
+print()
+submission.to_csv(own_dir_path+"/submission.csv", index=False)
 
 
 #https://www.analyticsvidhya.com/blog/2020/01/first-text-classification-in-pytorch/
