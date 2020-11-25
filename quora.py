@@ -1,8 +1,6 @@
-
-#!/usr/bin/env python
+# !/usr/bin/env python
 # coding: utf-8
 
-import argparse
 import numpy as np  # linear algebra
 import os
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
@@ -10,7 +8,6 @@ import time
 import torch
 import torchtext
 from sklearn.model_selection import StratifiedKFold, KFold, train_test_split
-from tensorflow.keras.preprocessing import text, sequence
 from torch import LongTensor
 from torch import nn
 from torch.nn import functional as F
@@ -19,16 +16,16 @@ from torch.utils import data
 from torch.utils.data import TensorDataset, Subset
 from torchtext.vocab import Vectors
 
-#Reproducing same results
+# Reproducing same results
 SEED = 2019
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
 
-#Cuda algorithms
+# Cuda algorithms
 torch.backends.cudnn.deterministic = True
 
-#not used yet
+# not used yet
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Config path
@@ -37,7 +34,6 @@ os.listdir("/media/sunil/06930e3e-f4e4-4037-bee5-327c2551e897/Downloads/kernal/q
 own_dir_path = '/media/sunil/06930e3e-f4e4-4037-bee5-327c2551e897/Downloads/kernal/quora'
 if not os.path.exists(own_dir_path):
     os.makedirs(own_dir_path)
-
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -50,17 +46,14 @@ DENSE_HIDDEN_UNITS = 4 * LSTM_UNITS
 
 train_df = pd.read_csv('train.csv')
 
-#Split data into testing and training and convert to csv or excel files
+# Split data into testing and training and convert to csv or excel files
 
-#train,test = train_test_split(train_df, test_size=0.05, random_state=0)
-#save the data
-#train.to_csv(own_dir_path +'/train.csv',index=False)
-#test.to_csv(own_dir_path +'/test.csv',index=False)
-
-
+# train,test = train_test_split(train_df, test_size=0.05, random_state=0)
+# save the data
+# train.to_csv(own_dir_path +'/train.csv',index=False)
+# test.to_csv(own_dir_path +'/test.csv',index=False)
 
 print("train of columns name :::", train_df.columns)
-
 train_df['question_text'] = train_df['question_text'].astype(str)
 train_df['question_text'] = train_df['question_text'].str.lower()
 
@@ -81,9 +74,6 @@ def preprocess(data):
 
 train_df['question_text'] = train_df['question_text'].apply(lambda x: preprocess(x))
 
-
-
-
 # torch_text with train data
 question_text_field = torchtext.data.Field(lower=True, tokenize='spacy', sequential=True, batch_first=True)
 target_field = torchtext.data.Field(sequential=False, use_vocab=False, is_target=True)
@@ -95,13 +85,14 @@ train_fields = [
     ('target', target_field)
 ]
 
-
-
-kfold_train_tabular_dataset = torchtext.data.TabularDataset(path= own_dir_path +'/train.csv',
+kfold_train_tabular_dataset = torchtext.data.TabularDataset(path=own_dir_path + '/train.csv',
                                                             format='csv',
-                                                            fields=train_fields)
+                                                            fields=train_fields,
+                                                            skip_header=True,
+                                                            # if your csv header has a header, make sure to pass this to ensure it doesn't get proceesed as data!
+                                                            )
 
-print("kfold_train_tabular_dataset",kfold_train_tabular_dataset)
+print("kfold_train_tabular_dataset", kfold_train_tabular_dataset)
 
 # it's require create vocab using train tabular dataset
 MAX_VOCAB_SIZE = 18000  # 25000
@@ -128,6 +119,7 @@ print("comment text field index to string ::::", question_text_field.vocab.itos[
 print("comment text field shape :::", question_text_field.vocab.vectors.shape)
 
 print("Unique tokens in text vocabulary :::", len(question_text_field.vocab))
+
 
 class TorchtextSubset(Subset):
     def __init__(self, dataset, indices):
@@ -227,14 +219,16 @@ SEED = 10
 kfold = KFold(n_splits=N_SPLITS, shuffle=False, random_state=SEED)
 idx_splits = list(kfold.split(range(len(kfold_train_tabular_dataset))))
 
+
 # sigmoid function
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+
 # save and load model functions
 def save(m, info):
-    torch.save(info, own_dir_path+'/best_model.info')
-    torch.save(m, own_dir_path+'/best_model.m')
+    torch.save(info, own_dir_path + '/best_model.info')
+    torch.save(m, own_dir_path + '/best_model.m')
 
 
 def binary_accuracy(preds, y):
@@ -250,20 +244,18 @@ def binary_accuracy(preds, y):
 
 
 def get_val_score(model, val_loader, loss_fn):
-    
     val_loader.init_epoch()
 
-    #deactivating dropout layers
+    # deactivating dropout layers
     model.eval()
 
-    #initialize every epoch
+    # initialize every epoch
     val_loss, val_acc = 0, 0
 
-    #deactivates autograd
+    # deactivates autograd
     with torch.no_grad():
         for i, data in enumerate(val_loader):
-
-            #retrieve text and no. of words
+            # retrieve text and no. of words
             data_len_question_text = LongTensor(list(map(len, data.question_text)))
             question = data.question_text
             question = question.to(device)
@@ -272,14 +264,14 @@ def get_val_score(model, val_loader, loss_fn):
             x_batch = question
             y_batch = my_target
 
-            #convert to 1d tensor
+            # convert to 1d tensor
             y_pred = model(x_batch, data_len_question_text).squeeze(1)
-            
-            #compute loss and accuracy
+
+            # compute loss and accuracy
             loss = loss_fn(y_pred, y_batch)
             acc = binary_accuracy(y_pred, y_batch)
 
-            #keep track of loss and accuracy
+            # keep track of loss and accuracy
             val_loss += loss.item()
             val_acc += acc.item()
 
@@ -308,16 +300,16 @@ def train_model(model, lr, batch_size, n_epochs, loss_fn):
 
             start_time = time.time()
 
-            #initialize every epoch
+            # initialize every epoch
             epoch_loss, epoch_acc = 0, 0
 
             for i, data in enumerate(train_loader):
                 step += 1
 
-                #resets the gradients after every batch
+                # resets the gradients after every batch
                 optimizer.zero_grad()
 
-                #retrieve text and no. of words
+                # retrieve text and no. of words
                 data_len_question_text = LongTensor(list(map(len, data.question_text)))
                 question = data.question_text
                 question = question.to(device)
@@ -325,34 +317,34 @@ def train_model(model, lr, batch_size, n_epochs, loss_fn):
                 x_batch = question
                 y_batch = my_target
 
-                #convert to 1D tensor
+                # convert to 1D tensor
                 y_pred = model(x_batch, data_len_question_text).squeeze(1)
 
-                #compute loss
+                # compute loss
                 loss = loss_fn(y_pred, y_batch)
-                
-                #compute accuracy
+
+                # compute accuracy
                 acc = binary_accuracy(y_pred, y_batch)
 
-                #backpropage the loss and compute the gradients
+                # backpropage the loss and compute the gradients
                 loss.backward()
-                
-                #update the weights
+
+                # update the weights
                 optimizer.step()
                 scheduler.step()
 
-                #loss and accuracy
+                # loss and accuracy
                 epoch_loss += loss.item()
                 epoch_acc += acc.item()
 
                 if step % len(train_loader) == 0:
-                    
-                    #evaluate the model
+
+                    # evaluate the model
                     val_acc, val_loss = get_val_score(model, val_loader, loss_fn)
 
                     print("current val_loss", val_loss, "last min_loss", min_loss)
 
-                    #save the best model
+                    # save the best model
                     if val_loss < min_loss:
                         save(m=model, info={'epoch': epoch, 'val_loss': val_loss})
                         min_loss = val_loss
@@ -360,7 +352,7 @@ def train_model(model, lr, batch_size, n_epochs, loss_fn):
                     print(
                         'val_acc', val_acc, 'val_loss', val_loss, 'train_acc', epoch_acc / len(train_loader),
                         'train_loss',
-                        epoch_loss / len(train_loader))
+                                                                               epoch_loss / len(train_loader))
 
             elapsed_time = time.time() - start_time
             print(
@@ -371,6 +363,7 @@ def train_model(model, lr, batch_size, n_epochs, loss_fn):
 
     return model
 
+
 # embedding_matrix it's passed in to embedding layers
 embedding_matrix = question_text_field.vocab.vectors
 print("embedding_matrix ::::", embedding_matrix)
@@ -379,41 +372,41 @@ print("embedding_matrix shape::::", embedding_matrix.shape)
 # model init
 model = NeuralNet(embedding_matrix)
 
-#set batch size
-lr=0.001
+# set batch size
+lr = 0.001
 BATCH_SIZE = 64
-n_epochs=1
+n_epochs = 1
 
 # train model
-#model = train_model(model, lr, BATCH_SIZE, n_epochs, loss_fn=nn.BCEWithLogitsLoss(reduction='mean'))
-#print()
+# model = train_model(model, lr, BATCH_SIZE, n_epochs, loss_fn=nn.BCEWithLogitsLoss(reduction='mean'))
+# print()
 
 # load best model
-model = torch.load(own_dir_path+'/best_model.m')
-info = torch.load(own_dir_path+'/best_model.info')
+model = torch.load(own_dir_path + '/best_model.m')
+info = torch.load(own_dir_path + '/best_model.info')
 
-#deactivating dropout layers
+# deactivating dropout layers
 model.eval();
 print("model info:::", info)
-
 
 test_fields = [
     ('qid', qid_field),
     ('question_text', question_text_field)
 ]
 
-kfold_test_tabular_dataset = torchtext.data.TabularDataset(own_dir_path+'/test.csv',
-format='csv',
-fields=test_fields)
+kfold_test_tabular_dataset = torchtext.data.TabularDataset(own_dir_path + '/test.csv',
+                                                           format='csv',
+                                                           fields=test_fields, skip_header=True,
+                                                           ## if your csv header has a header, make sure to pass this to ensure it doesn't get proceesed as data!
+                                                           )
 
 print("kfold test ::::", kfold_test_tabular_dataset[0].__dict__.keys())
 print("test-- dataset length of kfold tabular dataset:::::", len(kfold_test_tabular_dataset))
 
-#IMP :: run build vocab than check qid_field.vocab.itos
+# IMP :: run build vocab than check qid_field.vocab.itos
 qid_field.build_vocab(kfold_test_tabular_dataset)
 
 def test_model(model):
-
     test_loader = torchtext.data.BucketIterator(dataset=kfold_test_tabular_dataset,
                                                 batch_size=BATCH_SIZE,
                                                 # sort_key=lambda x: len(x.question_text),
@@ -423,9 +416,7 @@ def test_model(model):
 
     all_test_preds = []
     q_id = []
-
     model.eval()
-
     with torch.no_grad():
         for i, data in enumerate(test_loader):
             data_len_question_text = LongTensor(list(map(len, data.question_text)))
@@ -437,11 +428,9 @@ def test_model(model):
             q_id += data.qid.view(-1).data.numpy().tolist()
             all_test_preds += y_pred
 
-
     submission = pd.DataFrame.from_dict({
         'id': [qid_field.vocab.itos[i] for i in q_id],
-        # 'id': test_df['id'][0:len(test_df)],
-        'prediction': [i for i in all_test_preds],
+        'prediction': [i[0] for i in all_test_preds],
     })
 
     return submission
@@ -449,27 +438,28 @@ def test_model(model):
 
 submission = test_model(model)
 print()
-submission.to_csv(own_dir_path+"/submission.csv", index=False)
+submission.to_csv(own_dir_path + "/submission.csv", index=False)
 
+# https://www.analyticsvidhya.com/blog/2020/01/first-text-classification-in-pytorch/
 
-#https://www.analyticsvidhya.com/blog/2020/01/first-text-classification-in-pytorch/
-
-#inference 
+# inference
 import spacy
+
 nlp = spacy.load('en')
 
+
 def predict(model, sentence):
-    tokenized = [tok.text for tok in nlp.tokenizer(sentence)]   #tokenize the sentence 
-    indexed = [question_text_field.vocab.stoi[t] for t in tokenized]    #convert to integer sequence
-    length = [len(indexed)]     #compute no. of words
-    tensor = torch.LongTensor(indexed).to(device)   #convert to tensor
-    tensor = tensor.unsqueeze(1).T      #reshape in form of batch,no. of words
-    length_tensor = torch.LongTensor(length)    #convert to tensor
-    prediction = model(tensor, length_tensor)   #prediction 
+    tokenized = [tok.text for tok in nlp.tokenizer(sentence)]  # tokenize the sentence
+    indexed = [question_text_field.vocab.stoi[t] for t in tokenized]  # convert to integer sequence
+    length = [len(indexed)]  # compute no. of words
+    tensor = torch.LongTensor(indexed).to(device)  # convert to tensor
+    tensor = tensor.unsqueeze(1).T  # reshape in form of batch,no. of words
+    length_tensor = torch.LongTensor(length)  # convert to tensor
+    prediction = model(tensor, length_tensor)  # prediction
     return prediction.item()
 
 
-#make predictions
+# make predictions
 print(predict(model, "Are there any sports that you don't like?"))
 print(predict(model, "Why Indian girls go crazy about marrying Shri. Rahul Gandhi ji?"))
 print(predict(model, "How much money was Modi and BJP paid for hushing up the 2G scam?"))
