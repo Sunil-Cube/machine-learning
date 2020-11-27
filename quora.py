@@ -1,19 +1,20 @@
 # !/usr/bin/env python
 # coding: utf-8
 
-import numpy as np  # linear algebra
 import os
-import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 import time
+
+import numpy as np  # linear algebra
+import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 import torch
 import torchtext
-from sklearn.model_selection import StratifiedKFold, KFold, train_test_split
+from sklearn.metrics import f1_score
+from sklearn.model_selection import KFold
 from torch import LongTensor
 from torch import nn
 from torch.nn import functional as F
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-from torch.utils import data
-from torch.utils.data import TensorDataset, Subset
+from torch.utils.data import Subset
 from torchtext.vocab import Vectors
 
 # Reproducing same results
@@ -220,7 +221,7 @@ kfold = KFold(n_splits=N_SPLITS, shuffle=False, random_state=SEED)
 idx_splits = list(kfold.split(range(len(kfold_train_tabular_dataset))))
 
 
-# sigmoid function
+# sigmoid function in plain numpy .
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -243,8 +244,25 @@ def binary_accuracy(preds, y):
     return acc
 
 
+def threshold_search(valid_truth, valid_pred):
+    # search for best threshold regarding the F1 score given labels and predictions from the network.
+    best_threshold = 0
+    best_score = 0
+    for threshold in [i * 0.01 for i in range(100)]:
+        score = f1_score(valid_truth, np.array(valid_pred) > threshold)
+        if score > best_score:
+            best_threshold = threshold
+            best_score = score
+    print('best ******** threshold is {:.4f} with F1 score: {:.4f}'.format(best_threshold, best_score))
+    search_result = {'threshold': best_threshold, 'f1': best_score}
+    return search_result
+
+
 def get_val_score(model, val_loader, loss_fn):
     val_loader.init_epoch()
+
+    valid_pred = []
+    valid_truth = []
 
     # deactivating dropout layers
     model.eval()
@@ -275,7 +293,15 @@ def get_val_score(model, val_loader, loss_fn):
             val_loss += loss.item()
             val_acc += acc.item()
 
-        return val_acc / len(val_loader), val_loss / len(val_loader)
+            # Determining probability threshold
+            # matrix for the out-of-fold predictions
+            valid_truth += data.target.cpu().numpy().tolist()
+            valid_pred += torch.sigmoid(y_pred).cpu().numpy().tolist()
+
+        # Function to search for best threshold regarding the F1 score given labels and predictions from the network.
+        search_result = threshold_search(valid_truth, valid_pred)
+
+        return val_acc / len(val_loader), val_loss / len(val_loader),
 
 
 def train_model(model, lr, batch_size, n_epochs, loss_fn):
@@ -378,7 +404,7 @@ BATCH_SIZE = 64
 n_epochs = 1
 
 # train model
-# model = train_model(model, lr, BATCH_SIZE, n_epochs, loss_fn=nn.BCEWithLogitsLoss(reduction='mean'))
+model = train_model(model, lr, BATCH_SIZE, n_epochs, loss_fn=nn.BCEWithLogitsLoss(reduction='mean'))
 # print()
 
 # load best model
@@ -406,6 +432,7 @@ print("test-- dataset length of kfold tabular dataset:::::", len(kfold_test_tabu
 # IMP :: run build vocab than check qid_field.vocab.itos
 qid_field.build_vocab(kfold_test_tabular_dataset)
 
+
 def test_model(model):
     test_loader = torchtext.data.BucketIterator(dataset=kfold_test_tabular_dataset,
                                                 batch_size=BATCH_SIZE,
@@ -430,7 +457,9 @@ def test_model(model):
 
     submission = pd.DataFrame.from_dict({
         'id': [qid_field.vocab.itos[i] for i in q_id],
-        'prediction': [i[0] for i in all_test_preds],
+        # 0.5000 get best threshold with f1 score in get_val_score function
+        # 0.4900
+        'prediction': [(np.array(i[0]) >= 0.4900).astype(int) for i in all_test_preds],
     })
 
     return submission
