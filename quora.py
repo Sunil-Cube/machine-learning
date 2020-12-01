@@ -3,13 +3,13 @@
 
 import os
 import time
-
+import re
 import numpy as np  # linear algebra
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 import torch
 import torchtext
 from sklearn.metrics import f1_score
-from sklearn.model_selection import KFold
+from sklearn.model_selection import KFold, train_test_split
 from torch import LongTensor
 from torch import nn
 from torch.nn import functional as F
@@ -47,13 +47,6 @@ DENSE_HIDDEN_UNITS = 4 * LSTM_UNITS
 
 train_df = pd.read_csv('train.csv')
 
-# Split data into testing and training and convert to csv or excel files
-
-# train,test = train_test_split(train_df, test_size=0.05, random_state=0)
-# save the data
-# train.to_csv(own_dir_path +'/train.csv',index=False)
-# test.to_csv(own_dir_path +'/test.csv',index=False)
-
 print("train of columns name :::", train_df.columns)
 train_df['question_text'] = train_df['question_text'].astype(str)
 train_df['question_text'] = train_df['question_text'].str.lower()
@@ -63,17 +56,48 @@ def preprocess(data):
     '''
     Credit goes to https://www.kaggle.com/gpreda/jigsaw-fast-compact-solution
     '''
-    punct = "/-'?!.,#$%\'()*+-/:;<=>@[\\]^_`{|}~`" + '""“”’' + '∞θ÷α•à−β∅³π‘₹´°£€\×™√²—–&'
+    #punct = "/-'?!.,#$%\'()*+-/:;<=>@[\\]^_`{|}~`" + '""“”’' + '∞θ÷α•à−β∅³π‘₹´°£€\×™√²—–&'
+    puncts = [',', '.', '"', ':', ')', '(', '-', '!', '?', '|', ';', "'", '$', '&', '/', '[', ']', '>', '%', '=', '#',
+              '*', '+', '\\', '•', '~', '@', '£',
+              '·', '_', '{', '}', '©', '^', '®', '`', '<', '→', '°', '€', '™', '›', '♥', '←', '×', '§', '″', '′', 'Â',
+              '█', '½', 'à', '…',
+              '“', '★', '”', '–', '●', 'â', '►', '−', '¢', '²', '¬', '░', '¶', '↑', '±', '¿', '▾', '═', '¦', '║', '―',
+              '¥', '▓', '—', '‹', '─',
+              '▒', '：', '¼', '⊕', '▼', '▪', '†', '■', '’', '▀', '¨', '▄', '♫', '☆', 'é', '¯', '♦', '¤', '▲', 'è', '¸',
+              '¾', 'Ã', '⋅', '‘', '∞',
+              '∙', '）', '↓', '、', '│', '（', '»', '，', '♪', '╩', '╚', '³', '・', '╦', '╣', '╔', '╗', '▬', '❤', 'ï', 'Ø',
+              '¹', '≤', '‡', '√', ]
 
     def clean_special_chars(text, punct):
         for p in punct:
             text = text.replace(p, ' ')
         return text
 
-    return clean_special_chars(data, punct)
+    return clean_special_chars(data, puncts)
 
 
 train_df['question_text'] = train_df['question_text'].apply(lambda x: preprocess(x))
+
+
+# Clean numbers
+def clean_numbers(x):
+    x = re.sub('[0-9]{5,}', '#####', x)
+    x = re.sub('[0-9]{4}', '####', x)
+    x = re.sub('[0-9]{3}', '###', x)
+    x = re.sub('[0-9]{2}', '##', x)
+    return x
+
+
+train_df['question_text'] = train_df['question_text'].apply(lambda x: clean_numbers(x))
+
+
+# Split data into testing and training and convert to csv or excel files
+# split is done after the basic preprocessing part
+
+# train,test = train_test_split(train_df, test_size=0.05, random_state=0)
+# # save the data
+# train.to_csv(own_dir_path +'/train.csv',index=False)
+# test.to_csv(own_dir_path +'/test.csv',index=False)
 
 # torch_text with train data
 question_text_field = torchtext.data.Field(lower=True, tokenize='spacy', sequential=True, batch_first=True)
@@ -96,7 +120,7 @@ kfold_train_tabular_dataset = torchtext.data.TabularDataset(path=own_dir_path + 
 print("kfold_train_tabular_dataset", kfold_train_tabular_dataset)
 
 # it's require create vocab using train tabular dataset
-MAX_VOCAB_SIZE = 18000  # 25000
+MAX_VOCAB_SIZE = 95000  # 25000
 
 # question_text_field.build_vocab(kfold_train_tabular_dataset, max_size = MAX_VOCAB_SIZE, min_freq=1)
 question_text_field.build_vocab(kfold_train_tabular_dataset, max_size=MAX_VOCAB_SIZE)
@@ -404,7 +428,7 @@ BATCH_SIZE = 64
 n_epochs = 1
 
 # train model
-model = train_model(model, lr, BATCH_SIZE, n_epochs, loss_fn=nn.BCEWithLogitsLoss(reduction='mean'))
+#model = train_model(model, lr, BATCH_SIZE, n_epochs, loss_fn=nn.BCEWithLogitsLoss(reduction='mean'))
 # print()
 
 # load best model
@@ -459,7 +483,8 @@ def test_model(model):
         'id': [qid_field.vocab.itos[i] for i in q_id],
         # 0.5000 get best threshold with f1 score in get_val_score function
         # 0.4900
-        'prediction': [(np.array(i[0]) >= 0.4900).astype(int) for i in all_test_preds],
+        'prediction': [(np.array(i[0]) >= 0.4600).astype(int) for i in all_test_preds],
+        'value': [i[0] for i in all_test_preds],
     })
 
     return submission
