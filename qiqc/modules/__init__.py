@@ -1,0 +1,1 @@
+from qiqc.modules.classifier import BinaryClassifier

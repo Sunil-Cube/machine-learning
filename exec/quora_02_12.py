@@ -100,7 +100,6 @@ def main(args=None):
     parser.add_argument('--modelfile', '-m', type=Path, required=True)
     _args, others = parser.parse_known_args(args)
     modules = load_module(_args.modelfile)
-
     config = modules.ExperimentConfigBuilder().build(args=[])
     print(config)
     # start = time.time()
