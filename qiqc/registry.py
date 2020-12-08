@@ -1,4 +1,5 @@
 # Registries for preprocessing
+# its basically work on decorators as first we can declared then we can use it
 NORMALIZER_REGISTRY = {}
 TOKENIZER_REGISTRY = {}
 WORD_EMBEDDING_FEATURIZER_REGISTRY = {}

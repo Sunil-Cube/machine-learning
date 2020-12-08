@@ -10,16 +10,13 @@ from qiqc.presets.v1_8_1_bilsm_w2v_rnd import WordEmbeddingFeaturizerPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import WordExtraFeaturizerPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import SentenceExtraFeaturizerPresets
 
+from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EmbeddingPresets
+from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EncoderPresets
+from qiqc.presets.v1_8_1_bilsm_w2v_rnd import AggregatorPresets
+from qiqc.presets.v1_8_1_bilsm_w2v_rnd import MLPPresets
 
 # from qiqc.presets.v1_8_1_bilsm_w2v_rnd import PreprocessorPresets
-# from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EmbeddingPresets
-# from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EncoderPresets
-# from qiqc.presets.v1_8_1_bilsm_w2v_rnd import AggregatorPresets
-# from qiqc.presets.v1_8_1_bilsm_w2v_rnd import MLPPresets
-
-
 #from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EnsemblerPresets
-
 
 # =======  Experiment configuration  =======
 
@@ -37,16 +34,35 @@ class ExperimentConfigBuilder(ExperimentConfigBuilderBase):
     @property
     def modules(self):
         return [
+            # it's help of the class declared and pass keyword as arguments we are resolved references ...
             TextNormalizer,
             TextTokenizer,
             WordEmbeddingFeaturizer,
             WordExtraFeaturizer,
             SentenceExtraFeaturizer,
-            # Embedding,
-            # Encoder,
-            # Aggregator,
-            # MLP,
+            Embedding,
+            Encoder,
+            Aggregator,
+            MLP,
         ]
+
+def build_model(config, embedding_matrix, n_sentence_extra_features):
+    # it's help of the class declared and pass keyword as arguments we are resolved references ...
+    embedding = Embedding(config, embedding_matrix)
+    encoder = Encoder(config, embedding.out_size)
+    aggregator = Aggregator(config)
+    mlp = MLP(config, encoder.out_size + n_sentence_extra_features)
+    out = nn.Linear(config.mlp_n_hiddens[-1], 1)
+    lossfunc = nn.BCEWithLogitsLoss()
+
+    return BinaryClassifier(
+        embedding=embedding,
+        encoder=encoder,
+        aggregator=aggregator,
+        mlp=mlp,
+        out=out,
+        lossfunc=lossfunc,
+    )
 
 # =======  Preprocessing modules  =======
 
@@ -72,21 +88,20 @@ class SentenceExtraFeaturizer(SentenceExtraFeaturizerPresets):
 #
 # # =======  Training modules  =======
 #
-# class Embedding(EmbeddingPresets):
-#     pass
-#
-#
-# class Encoder(EncoderPresets):
-#     pass
-#
-#
-# class Aggregator(AggregatorPresets):
-#     pass
-#
-#
-# class MLP(MLPPresets):
-#     pass
-#
+class Embedding(EmbeddingPresets):
+    pass
+
+class Encoder(EncoderPresets):
+    pass
+
+
+class Aggregator(AggregatorPresets):
+    pass
+
+
+class MLP(MLPPresets):
+    pass
+
 #
 # class Ensembler(EnsemblerPresets):
 #     pass

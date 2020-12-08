@@ -72,3 +72,4 @@ class ExperimentConfigBuilderBase(metaclass=ABCMeta):
             config.outdir = Path('.')
 
         return config
+

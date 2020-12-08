@@ -26,4 +26,9 @@ def set_seed(seed=0):
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
 
-
+def rmtree_after_confirmation(path, force=False):
+    if Path(path).exists():
+        if not force and not prompter.yesno('Overwrite %s?' % path):
+            sys.exit(0)
+        else:
+            shutil.rmtree(path)

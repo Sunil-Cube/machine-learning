@@ -51,3 +51,4 @@ class BinaryClassifier(nn.Module):
         h = self.aggregator(h, mask)
         h = self.mlp(h, X2)
         return h
+

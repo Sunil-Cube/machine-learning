@@ -94,14 +94,15 @@ class QIQCDataset(object):
 
 #############################################################
 
-
 def main(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--modelfile', '-m', type=Path, required=True)
     _args, others = parser.parse_known_args(args)
     modules = load_module(_args.modelfile)
     config = modules.ExperimentConfigBuilder().build(args=[])
-    print(config)
+    print(config.outdir, config.outdir)
+    #qiqc.utils.rmtree_after_confirmation(config.outdir, config.test) # pending
+    train(config, modules)
     # start = time.time()
     # set_seed(config.seed)
     #
@@ -112,6 +113,19 @@ def main(args=None):
     #
     # print('Tokenize texts...')
     # preprocessor = Preprocessor()
+
+def train(config, modules):
+    print(config)
+    start = time.time()
+    set_seed(config.seed)
+    config.outdir.mkdir(parents=True, exist_ok=True)
+    build_model = modules.build_model
+
+    TextNormalizer = modules.TextNormalizer
+    TextTokenizer = modules.TextTokenizer
+    WordEmbeddingFeaturizer = modules.WordEmbeddingFeaturizer
+    WordExtraFeaturizer = modules.WordExtraFeaturizer
+    SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
 if __name__ == '__main__':
     main()
