@@ -2,13 +2,14 @@ import numpy as np
 from torch import nn
 
 from qiqc.config import ExperimentConfigBuilderBase
+
+from qiqc.preprocessing.preprocessors.word import WordbasedPreprocessor
+
 from qiqc.preprocessing.modules import SentenceExtraFeaturizerWrapper
 from qiqc.preprocessing.modules import TextNormalizerWrapper
 from qiqc.preprocessing.modules import TextTokenizerWrapper
 from qiqc.preprocessing.modules import WordEmbeddingFeaturizerWrapper
 from qiqc.preprocessing.modules import WordExtraFeaturizerWrapper
-
-# from qiqc.preprocessing.preprocessors import WordbasedPreprocessor
 
 from qiqc.modules import EmbeddingWrapper
 from qiqc.modules import EncoderWrapper
@@ -74,25 +75,25 @@ class SentenceExtraFeaturizerPresets(SentenceExtraFeaturizerWrapper):
         sentence_extra_features=[],
     )
 
-# class PreprocessorPresets(WordbasedPreprocessor):
-#
-#     def build_word_features(self, word_embedding_featurizer,
-#                             embedding_matrices, word_extra_features):
-#         embedding = np.stack(list(embedding_matrices.values()))
-#
-#         # Add noise
-#         unk = (embedding[0] == 0).all(axis=1)
-#         mean, std = embedding[0, ~unk].mean(), embedding[0, ~unk].std()
-#         unk_and_hfq = unk & word_embedding_featurizer.vocab.hfq
-#         noise = np.random.normal(
-#             mean, std, (unk_and_hfq.sum(), embedding[0].shape[1]))
-#         embedding[0, unk_and_hfq] = noise
-#         embedding[0, 0] = 0
-#
-#         embedding = embedding.mean(axis=0)
-#         word_features = np.concatenate(
-#             [embedding, word_extra_features], axis=1)
-#         return word_features
+class PreprocessorPresets(WordbasedPreprocessor):
+
+    def build_word_features(self, word_embedding_featurizer,
+                            embedding_matrices, word_extra_features):
+        embedding = np.stack(list(embedding_matrices.values()))
+
+        # Add noise
+        unk = (embedding[0] == 0).all(axis=1)
+        mean, std = embedding[0, ~unk].mean(), embedding[0, ~unk].std()
+        unk_and_hfq = unk & word_embedding_featurizer.vocab.hfq
+        noise = np.random.normal(
+            mean, std, (unk_and_hfq.sum(), embedding[0].shape[1]))
+        embedding[0, unk_and_hfq] = noise
+        embedding[0, 0] = 0
+
+        embedding = embedding.mean(axis=0)
+        word_features = np.concatenate(
+            [embedding, word_extra_features], axis=1)
+        return word_features
 
 
 # =======  Training modules  =======

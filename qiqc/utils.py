@@ -8,6 +8,8 @@ import torch
 import numpy as np
 import prompter
 
+from _qiqc.utils import *  # NOQA
+
 def load_module(filename):
     assert isinstance(filename, Path)
     name = filename.stem
@@ -32,3 +34,18 @@ def rmtree_after_confirmation(path, force=False):
             sys.exit(0)
         else:
             shutil.rmtree(path)
+
+def pad_sequence(xs, length, padding_value=0):
+    assert isinstance(xs, list)
+    n_padding = length - len(xs)
+    return np.array(xs + [padding_value] * n_padding, 'i')[:length]
+
+class Pipeline(object):
+
+    def __init__(self, *modules):
+        self.modules = modules
+
+    def __call__(self, x):
+        for module in self.modules:
+            x = module(x)
+        return x

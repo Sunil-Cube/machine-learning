@@ -15,7 +15,7 @@ from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EncoderPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import AggregatorPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import MLPPresets
 
-# from qiqc.presets.v1_8_1_bilsm_w2v_rnd import PreprocessorPresets
+from qiqc.presets.v1_8_1_bilsm_w2v_rnd import PreprocessorPresets
 #from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EnsemblerPresets
 
 # =======  Experiment configuration  =======
@@ -64,6 +64,12 @@ def build_model(config, embedding_matrix, n_sentence_extra_features):
         lossfunc=lossfunc,
     )
 
+
+# =======  Preprocessor modules  =======
+
+class Preprocessor(PreprocessorPresets):
+    pass
+
 # =======  Preprocessing modules  =======
 
 class TextNormalizer(TextNormalizerPresets):
@@ -80,10 +86,6 @@ class WordExtraFeaturizer(WordExtraFeaturizerPresets):
 
 class SentenceExtraFeaturizer(SentenceExtraFeaturizerPresets):
     pass
-
-
-# class Preprocessor(PreprocessorPresets):
-#     pass
 
 #
 # # =======  Training modules  =======

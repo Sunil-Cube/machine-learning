@@ -1,6 +1,5 @@
 from qiqc.preprocessing.modules.wrappers.normalizer import TextNormalizerWrapper  # NOQA
 from qiqc.preprocessing.modules.wrappers.tokenizer import TextTokenizerWrapper  # NOQA
-
 from qiqc.preprocessing.modules.wrappers.featurizer import WordEmbeddingFeaturizerWrapper  # NOQA
 from qiqc.preprocessing.modules.wrappers.featurizer import WordExtraFeaturizerWrapper  # NOQA
 from qiqc.preprocessing.modules.wrappers.featurizer import SentenceExtraFeaturizerWrapper  # NOQA

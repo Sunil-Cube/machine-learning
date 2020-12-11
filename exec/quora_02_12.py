@@ -30,6 +30,9 @@ from torch import nn
 from torch.utils.data import DataLoader, WeightedRandomSampler
 from tqdm import tqdm
 
+#import pyximport; pyximport.install() #one way to build cpython
+
+
 import sys
 sys.path.append('/media/sunil/06930e3e-f4e4-4037-bee5-327c2551e897/Downloads/kernal/kernal_scripts/git_manage')
 
@@ -121,11 +124,14 @@ def train(config, modules):
     config.outdir.mkdir(parents=True, exist_ok=True)
     build_model = modules.build_model
 
+    Preprocessor = modules.Preprocessor
     TextNormalizer = modules.TextNormalizer
     TextTokenizer = modules.TextTokenizer
     WordEmbeddingFeaturizer = modules.WordEmbeddingFeaturizer
     WordExtraFeaturizer = modules.WordExtraFeaturizer
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
+
+
 
 if __name__ == '__main__':
     main()
