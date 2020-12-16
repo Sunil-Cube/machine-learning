@@ -34,9 +34,9 @@ class TextNormalizerPresets(TextNormalizerWrapper):
     default_config = dict(
         normalizers=[
             'lower',
-            'misspell',
-            'punct',
-            'number+underscore'
+            #'misspell',
+            #'punct',
+            #'number+underscore'
         ]
     )
 

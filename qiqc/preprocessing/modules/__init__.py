@@ -10,3 +10,4 @@ from qiqc.preprocessing.modules.featurizers.word_embedding_features import Word2
 from qiqc.preprocessing.modules.featurizers.word_embedding_features import FastTextFeaturizer  # NOQA
 
 
+from qiqc.preprocessing.modules.normalizers.rulebase import cylower  # NOQA

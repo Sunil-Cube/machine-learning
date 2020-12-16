@@ -12,6 +12,8 @@ from Cython.Distutils import build_ext
 ext_modules = [
     Extension('_qiqc.utils',
               sources=['qiqc/utils.pyx']),
+    Extension('_qiqc.preprocessing.modules.normalizers.rulebase',
+              sources=['qiqc/preprocessing/modules/normalizers/rulebase.pyx'])
 ]
 
 setup(
@@ -24,3 +26,8 @@ setup(
     ext_modules=ext_modules,
     cmdclass={'build_ext': build_ext},
 )
+
+
+
+#run setup.py
+#python3 setup.py build_ext --inplace

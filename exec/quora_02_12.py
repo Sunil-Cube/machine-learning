@@ -101,21 +101,12 @@ def main(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--modelfile', '-m', type=Path, required=True)
     _args, others = parser.parse_known_args(args)
-    modules = load_module(_args.modelfile)
+    modules = load_module(_args.modelfile) # load all file we can check using (step into code)
     config = modules.ExperimentConfigBuilder().build(args=[])
     print(config.outdir, config.outdir)
     #qiqc.utils.rmtree_after_confirmation(config.outdir, config.test) # pending
     train(config, modules)
-    # start = time.time()
-    # set_seed(config.seed)
-    #
-    # train_df, submit_df = load_qiqc(n_rows=config.n_rows)
-    # datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
-    #
-    # train_dataset, test_dataset, submit_dataset = datasets
-    #
-    # print('Tokenize texts...')
-    # preprocessor = Preprocessor()
+
 
 def train(config, modules):
     print(config)
@@ -131,6 +122,16 @@ def train(config, modules):
     WordExtraFeaturizer = modules.WordExtraFeaturizer
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
+    train_df, submit_df = load_qiqc(n_rows=config.n_rows)
+    datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
+
+    train_dataset, test_dataset, submit_dataset = datasets
+
+    # print('Tokenize texts...')
+    preprocessor = Preprocessor()
+    normalizer = TextNormalizer(config)
+
+    
 
 
 if __name__ == '__main__':
