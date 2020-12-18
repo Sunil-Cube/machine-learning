@@ -122,7 +122,8 @@ def train(config, modules):
     WordExtraFeaturizer = modules.WordExtraFeaturizer
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
-    train_df, submit_df = load_qiqc(n_rows=config.n_rows)
+    #train_df, submit_df = load_qiqc(n_rows=config.n_rows)
+    train_df, submit_df = load_qiqc(n_rows=10)
     datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
 
     train_dataset, test_dataset, submit_dataset = datasets
@@ -130,8 +131,10 @@ def train(config, modules):
     # print('Tokenize texts...')
     preprocessor = Preprocessor()
     normalizer = TextNormalizer(config)
+    tokenizer = TextTokenizer(config)
+    train_dataset.tokens, test_dataset.tokens, submit_dataset.tokens = \
+        preprocessor.tokenize(datasets, normalizer, tokenizer)
 
-    
 
 
 if __name__ == '__main__':

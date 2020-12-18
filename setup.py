@@ -13,7 +13,9 @@ ext_modules = [
     Extension('_qiqc.utils',
               sources=['qiqc/utils.pyx']),
     Extension('_qiqc.preprocessing.modules.normalizers.rulebase',
-              sources=['qiqc/preprocessing/modules/normalizers/rulebase.pyx'])
+              sources=['qiqc/preprocessing/modules/normalizers/rulebase.pyx']),
+    Extension('_qiqc.preprocessing.modules.tokenizers.word',
+                        sources=['qiqc/preprocessing/modules/tokenizers/word.pyx'])
 ]
 
 setup(
@@ -31,3 +33,7 @@ setup(
 
 #run setup.py
 #python3 setup.py build_ext --inplace
+
+#it is steps in background to python call C and C++ extension .
+#https://github.com/llSourcell/c_programming_for_machine_learning/blob/master/Cython.ipynb
+

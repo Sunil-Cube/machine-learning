@@ -3,11 +3,10 @@ from torch import nn
 
 from qiqc.config import ExperimentConfigBuilderBase
 
-from qiqc.preprocessing.preprocessors.word import WordbasedPreprocessor
-
-from qiqc.preprocessing.modules import SentenceExtraFeaturizerWrapper
 from qiqc.preprocessing.modules import TextNormalizerWrapper
 from qiqc.preprocessing.modules import TextTokenizerWrapper
+from qiqc.preprocessing.preprocessors.word import WordbasedPreprocessor
+from qiqc.preprocessing.modules import SentenceExtraFeaturizerWrapper
 from qiqc.preprocessing.modules import WordEmbeddingFeaturizerWrapper
 from qiqc.preprocessing.modules import WordExtraFeaturizerWrapper
 

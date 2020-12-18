@@ -1,5 +1,7 @@
+
 from qiqc.preprocessing.modules.wrappers.normalizer import TextNormalizerWrapper  # NOQA
 from qiqc.preprocessing.modules.wrappers.tokenizer import TextTokenizerWrapper  # NOQA
+
 from qiqc.preprocessing.modules.wrappers.featurizer import WordEmbeddingFeaturizerWrapper  # NOQA
 from qiqc.preprocessing.modules.wrappers.featurizer import WordExtraFeaturizerWrapper  # NOQA
 from qiqc.preprocessing.modules.wrappers.featurizer import SentenceExtraFeaturizerWrapper  # NOQA
@@ -11,3 +13,5 @@ from qiqc.preprocessing.modules.featurizers.word_embedding_features import FastT
 
 
 from qiqc.preprocessing.modules.normalizers.rulebase import cylower  # NOQA
+from qiqc.preprocessing.modules.tokenizers.word import cysplit  # NOQA
+
