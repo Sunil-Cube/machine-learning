@@ -1,0 +1,58 @@
+
+ex: 
+
+099396f3224433e51d27	why do we choose to tolerate things rather than follow our own feelings 	0
+21aeec3f8e01c60ba22b	what do you think about the giant petrified trees conspiracy 	0
+
+
+
+===============================================================================================================================
+
+# print('Tokenize texts...')
+
+
+train_dataset.tokens[0] 
+
+
+['why', 'do', 'we', 'choose', 'to', 'tolerate', 'things', 'rather', 'than', 'follow', 'our', 'own', 'feelings']
+
+
+train_dataset.tokens[1] 
+
+['what', 'do', 'you', 'think', 'about', 'the', 'giant', 'petrified', 'trees', 'conspiracy']
+
+
+
+print(train_dataset.tokens)
+
+[list(['why', 'do', 'we', 'choose', 'to', 'tolerate', 'things', 'rather', 'than', 'follow', 'our', 'own', 'feelings']), list(['what', 'do', 'you', 'think', 'about', 'the', 'giant', 'petrified', 'trees', 'conspiracy'])]
+
+
+
+print(submit_dataset.tokens)
+
+[list(['why', 'do', 'zainichi', 'koreans', '在日朝鮮人／韓国人', 'dislike', 'anton', 'antenorcruz']), list(['does', 'delhi', 'university', 'ask', 'questions', 'from', 'general', 'aptitude', 'subjects', 'like', 'general', 'science', 'maths', 'english', 'in', 'the', 
+
+
+
+===============================================================================================================================
+
+print('Build vocabulary...')
+vocab = preprocessor.build_vocab(datasets, config)
+
+vocab
+
+Counter({'do': 3, 'the': 2, 'why': 2, 'than': 1, 'like': 1, 'english': 1, 'things': 1, 'general': 1, 'university': 1, 'questions': 1, 'giant': 1, 'zainichi': 1, 'rather': 1, 'antenorcruz': 1, 'entrance': 1, 'aptitude': 1, 'delhi': 1, '在日朝鮮人／韓国人': 1, 'examination': 1, 'ask': 1, 'subjects': 1, 'in': 1, 'trees': 1, 'dislike': 1, 'you': 1, 'a': 1, 'koreans': 1, 'think': 1, 'choose': 1, 'from': 1, 'we': 1, 'does': 1, 'maths': 1, 'what': 1, 'follow': 1, 'our': 1, 'anton': 1, 'feelings': 1, 'about': 1, 'petrified': 1, 'tolerate': 1, 'conspiracy': 1, 'own': 1, 'science': 1, 'm': 1, 'to': 1})
+
+
+self.word_freq
+
+{'examination': 1, 'dislike': 1, 'does': 1, 'in': 1, 'subjects': 1, 'things': 1, 'general': 1, '<PAD>': 0, 'giant': 1, 'delhi': 1, 'the': 2, 'we': 1, 'own': 1, 'follow': 1, 'a': 1, 'think': 1, 'university': 1, 'tolerate': 1, 'to': 1, 'our': 1, 'koreans': 1, 'maths': 1, 'conspiracy': 1, '在日朝鮮人／韓国人': 1, 'about': 1, 'than': 1, 'petrified': 1, 'science': 1, 'why': 2, 'what': 1, 'zainichi': 1, 'from': 1, 'entrance': 1, 'english': 1, 'anton': 1, 'rather': 1, 'antenorcruz': 1, 'you': 1, 'choose': 1, 'do': 3, 'aptitude': 1, 'questions': 1, 'like': 1, 'feelings': 1, 'trees': 1, 'ask': 1, 'm': 1}
+
+
+self.token2id
+
+{'examination': 1, 'koreans': 3, 'subjects': 5, 'in': 2, 'does': 7, 'things': 8, 'general': 39, '<PAD>': 0, 'giant': 11, 'delhi': 12, 'the': 13, 'we': 14, 'own': 15, 'follow': 10, 'a': 17, 'university': 18, 'tolerate': 19, 'to': 20, 'our': 21, 'dislike': 22, 'maths': 23, 'conspiracy': 24, 'questions': 6, '在日朝鮮人／韓国人': 25, 'rather': 26, 'than': 27, 'petrified': 28, 'science': 29, 'why': 4, 'what': 30, 'zainichi': 31, 'from': 32, 'entrance': 33, 'english': 34, 'anton': 35, 'about': 36, 'antenorcruz': 16, 'you': 37, 'choose': 38, 'do': 9, 'aptitude': 40, 'think': 41, 'like': 42, 'feelings': 43, 'm': 44, 'ask': 45, 'trees': 46}
+
+
+

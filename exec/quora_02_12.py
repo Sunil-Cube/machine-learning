@@ -92,6 +92,20 @@ class QIQCDataset(object):
     def negatives(self):
         return self.df[self.df.target == 0]
 
+    def build(self, device):
+        self._X = self.tids
+        self.X = torch.Tensor(self._X).type(torch.long).to(device)
+        if 'target' in self.df:
+            self._t = self.df.target[:, None]
+            self._W = self.df.weights
+            self.t = torch.Tensor(self._t).type(torch.float).to(device)
+            self.W = torch.Tensor(self._W).type(torch.float).to(device)
+        if hasattr(self, '_X2'):
+            self.X2 = torch.Tensor(self._X2).type(torch.float).to(device)
+        else:
+            self._X2 = np.zeros((self._X.shape[0], 1), 'f')
+            self.X2 = torch.Tensor(self._X2).type(torch.float).to(device)
+
 
 
 
@@ -123,7 +137,7 @@ def train(config, modules):
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
     #train_df, submit_df = load_qiqc(n_rows=config.n_rows)
-    train_df, submit_df = load_qiqc(n_rows=10)
+    train_df, submit_df = load_qiqc(n_rows=2)
     datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
 
     train_dataset, test_dataset, submit_dataset = datasets
@@ -135,6 +149,22 @@ def train(config, modules):
     train_dataset.tokens, test_dataset.tokens, submit_dataset.tokens = \
         preprocessor.tokenize(datasets, normalizer, tokenizer)
 
+    print('Build vocabulary...')
+    vocab = preprocessor.build_vocab(datasets, config)
+
+    print('Build token ids...')
+    train_dataset.tids, test_dataset.tids, submit_dataset.tids = \
+        preprocessor.build_tokenids(datasets, vocab, config)
+
+    print('Build sentence extra features...')
+    sentence_extra_featurizer = SentenceExtraFeaturizer(config)
+
+    train_dataset._X2, test_dataset._X2, submit_dataset._X2 = \
+        preprocessor.build_sentence_features(datasets, sentence_extra_featurizer)
+
+    [d.build(config.device) for d in datasets]
+
+    
 
 
 if __name__ == '__main__':

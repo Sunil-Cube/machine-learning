@@ -34,6 +34,9 @@ class WordVocab(object):
             **{'<PAD>': 0},
             **{word: i + 1 for i, word in enumerate(counter)}
         }
+
+        # print("self.word_freq", self.word_freq) # its simple word based freq set
+        # print("self.token2id",self.token2id) # each word give to ID with increment number
+
         self.lfq = np.array(list(self.word_freq.values())) < self.mincount
         self.hfq = ~self.lfq
-
