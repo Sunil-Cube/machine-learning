@@ -22,7 +22,6 @@ train_dataset.tokens[1]
 ['what', 'do', 'you', 'think', 'about', 'the', 'giant', 'petrified', 'trees', 'conspiracy']
 
 
-
 print(train_dataset.tokens)
 
 [list(['why', 'do', 'we', 'choose', 'to', 'tolerate', 'things', 'rather', 'than', 'follow', 'our', 'own', 'feelings']), list(['what', 'do', 'you', 'think', 'about', 'the', 'giant', 'petrified', 'trees', 'conspiracy'])]
@@ -35,6 +34,13 @@ print(submit_dataset.tokens)
 
 
 
+[array([list(['why', 'do', 'we', 'choose', 'to', 'tolerate', 'things', 'rather', 'than', 'follow', 'our', 'own', 'feelings']),
+       list(['what', 'do', 'you', 'think', 'about', 'the', 'giant', 'petrified', 'trees', 'conspiracy'])],
+      dtype=object), array([], dtype=object), array([list(['why', 'do', 'zainichi', 'koreans', '在日朝鮮人／韓国人', 'dislike', 'anton', 'antenorcruz']),
+       list(['does', 'delhi', 'university', 'ask', 'questions', 'from', 'general', 'aptitude', 'subjects', 'like', 'general', 'science', 'maths', 'english', 'in', 'the', 'm', 'a', 'entrance', 'examination'])],
+      dtype=object)]
+
+
 ===============================================================================================================================
 
 print('Build vocabulary...')
@@ -42,17 +48,79 @@ vocab = preprocessor.build_vocab(datasets, config)
 
 vocab
 
-Counter({'do': 3, 'the': 2, 'why': 2, 'than': 1, 'like': 1, 'english': 1, 'things': 1, 'general': 1, 'university': 1, 'questions': 1, 'giant': 1, 'zainichi': 1, 'rather': 1, 'antenorcruz': 1, 'entrance': 1, 'aptitude': 1, 'delhi': 1, '在日朝鮮人／韓国人': 1, 'examination': 1, 'ask': 1, 'subjects': 1, 'in': 1, 'trees': 1, 'dislike': 1, 'you': 1, 'a': 1, 'koreans': 1, 'think': 1, 'choose': 1, 'from': 1, 'we': 1, 'does': 1, 'maths': 1, 'what': 1, 'follow': 1, 'our': 1, 'anton': 1, 'feelings': 1, 'about': 1, 'petrified': 1, 'tolerate': 1, 'conspiracy': 1, 'own': 1, 'science': 1, 'm': 1, 'to': 1})
+Counter({'do': 3, 'the': 2, 'why': 2, 'giant': 1, 'subjects': 1, 'choose': 1, 'than': 1, 'zainichi': 1, 'anton': 1, 'we': 1, 'examination': 1, 'questions': 1, 'dislike': 1, 'university': 1, 'rather': 1, 'in': 1, 'tolerate': 1, 'a': 1, 'does': 1, 'feelings': 1, 'our': 1, 'conspiracy': 1, 'what': 1, 'ask': 1, 'own': 1, '在日朝鮮人／韓国人': 1, 'you': 1, 'to': 1, 'm': 1, 'koreans': 1, 'maths': 1, 'general': 1, 'about': 1, 'trees': 1, 'think': 1, 'follow': 1, 'from': 1, 'antenorcruz': 1, 'things': 1, 'like': 1, 'delhi': 1, 'science': 1, 'english': 1, 'aptitude': 1, 'entrance': 1, 'petrified': 1})
 
 
 self.word_freq
 
-{'examination': 1, 'dislike': 1, 'does': 1, 'in': 1, 'subjects': 1, 'things': 1, 'general': 1, '<PAD>': 0, 'giant': 1, 'delhi': 1, 'the': 2, 'we': 1, 'own': 1, 'follow': 1, 'a': 1, 'think': 1, 'university': 1, 'tolerate': 1, 'to': 1, 'our': 1, 'koreans': 1, 'maths': 1, 'conspiracy': 1, '在日朝鮮人／韓国人': 1, 'about': 1, 'than': 1, 'petrified': 1, 'science': 1, 'why': 2, 'what': 1, 'zainichi': 1, 'from': 1, 'entrance': 1, 'english': 1, 'anton': 1, 'rather': 1, 'antenorcruz': 1, 'you': 1, 'choose': 1, 'do': 3, 'aptitude': 1, 'questions': 1, 'like': 1, 'feelings': 1, 'trees': 1, 'ask': 1, 'm': 1}
+{'giant': 1, 'subjects': 1, 'choose': 1, 'than': 1, 'zainichi': 1, 'anton': 1, 'we': 1, 'examination': 1, 'questions': 1, 'university': 1, 'rather': 1, 'in': 1, 'tolerate': 1, 'delhi': 1, 'does': 1, 'feelings': 1, 'science': 1, 'conspiracy': 1, 'what': 1, 'ask': 1, 'own': 1, 'follow': 1, '在日朝鮮人／韓国人': 1, 'you': 1, 'english': 1, 'the': 2, 'to': 1, 'm': 1, 'koreans': 1, 'maths': 1, 'general': 1, 'about': 1, 'trees': 1, 'think': 1, 'dislike': 1, 'antenorcruz': 1, 'from': 1, 'why': 2, 'things': 1, 'like': 1, 'a': 1, 'our': 1, 'do': 3, '<PAD>': 0, 'aptitude': 1, 'entrance': 1, 'petrified': 1}
 
 
 self.token2id
 
-{'examination': 1, 'koreans': 3, 'subjects': 5, 'in': 2, 'does': 7, 'things': 8, 'general': 39, '<PAD>': 0, 'giant': 11, 'delhi': 12, 'the': 13, 'we': 14, 'own': 15, 'follow': 10, 'a': 17, 'university': 18, 'tolerate': 19, 'to': 20, 'our': 21, 'dislike': 22, 'maths': 23, 'conspiracy': 24, 'questions': 6, '在日朝鮮人／韓国人': 25, 'rather': 26, 'than': 27, 'petrified': 28, 'science': 29, 'why': 4, 'what': 30, 'zainichi': 31, 'from': 32, 'entrance': 33, 'english': 34, 'anton': 35, 'about': 36, 'antenorcruz': 16, 'you': 37, 'choose': 38, 'do': 9, 'aptitude': 40, 'think': 41, 'like': 42, 'feelings': 43, 'm': 44, 'ask': 45, 'trees': 46}
+{'giant': 1, 'dislike': 10, 'choose': 3, 'than': 4, 'zainichi': 5, 'anton': 6, 'we': 7, 'examination': 8, 'questions': 9, 'university': 11, 'rather': 12, 'in': 13, 'tolerate': 14, 'delhi': 40, 'does': 16, 'feelings': 17, 'science': 41, 'conspiracy': 19, 'what': 20, 'ask': 21, 'own': 22, 'follow': 34, '在日朝鮮人／韓国人': 23, 'you': 24, 'english': 43, 'the': 25, 'to': 26, 'm': 27, 'koreans': 28, 'maths': 29, 'general': 30, 'about': 31, 'trees': 32, 'think': 33, 'subjects': 2, 'antenorcruz': 36, 'from': 35, 'why': 37, 'entrance': 38, 'like': 39, 'a': 15, 'our': 18, 'do': 42, '<PAD>': 0, 'aptitude': 44, 'things': 45, 'petrified': 46}
+
+================================================================================================
+================================================
+
+print('Build token ids...') it's basically arrange "sentance with token-id"
+
+print(tokenids)
+
+[array([[37, 42,  7,  3, 26, 14, 45, 12,  4, 34, 18, 22, 17,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0],
+       [20, 42, 24, 33, 31, 25,  1, 46, 32, 19,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0]], dtype=int32), array([], shape=(0, 72), dtype=int32), array([[37, 42,  5, 28, 23, 10,  6, 36,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0],
+       [16, 40, 11, 21,  9, 35, 30, 44,  2, 39, 30, 41, 29, 43, 13, 25,
+        27, 15, 38,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0]], dtype=int32)]
+
+
+================================================================================================
+================================================
+
+ApplyNdArray accept function same as return function  .
+
+======================================================================
+
+
+in def build(self, device)
+
+
+self.X tensor
+============
+
+tensor([[37, 42,  7,  3, 26, 14, 45, 12,  4, 34, 18, 22, 17,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [20, 42, 24, 33, 31, 25,  1, 46, 32, 19,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]])
 
 
 
+tensor([[37, 42,  5, 28, 23, 10,  6, 36,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [16, 40, 11, 21,  9, 35, 30, 44,  2, 39, 30, 41, 29, 43, 13, 25, 27, 15,
+         38,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]])
+
+
+===================================================================================================

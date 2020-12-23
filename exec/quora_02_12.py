@@ -162,9 +162,13 @@ def train(config, modules):
     train_dataset._X2, test_dataset._X2, submit_dataset._X2 = \
         preprocessor.build_sentence_features(datasets, sentence_extra_featurizer)
 
+    #in def build(self, device) convert array to tensor
     [d.build(config.device) for d in datasets]
 
-    
+    print('Load pretrained vectors...')
+    pretrained_vectors = load_pretrained_vectors(
+        config.use_pretrained_vectors, vocab.token2id, test=config.test)
+
 
 
 if __name__ == '__main__':
