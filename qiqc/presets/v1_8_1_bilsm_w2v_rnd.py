@@ -48,7 +48,8 @@ class TextTokenizerPresets(TextTokenizerWrapper):
 
 class WordEmbeddingFeaturizerPresets(WordEmbeddingFeaturizerWrapper):
     default_config = dict(
-        use_pretrained_vectors=['glove', 'paragram'],
+        #use_pretrained_vectors=['glove', 'paragram'],
+        use_pretrained_vectors=['glove'],
         word_embedding_features=['pretrained', 'word2vec'],
     )
 

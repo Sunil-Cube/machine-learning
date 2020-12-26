@@ -30,6 +30,9 @@ from torch import nn
 from torch.utils.data import DataLoader, WeightedRandomSampler
 from tqdm import tqdm
 
+from qiqc.preprocessing.modules import load_pretrained_vectors
+
+
 #import pyximport; pyximport.install() #one way to build cpython
 
 
@@ -169,6 +172,27 @@ def train(config, modules):
     pretrained_vectors = load_pretrained_vectors(
         config.use_pretrained_vectors, vocab.token2id, test=config.test)
 
+    print('Build word embedding matrix...')
+    word_embedding_featurizer = WordEmbeddingFeaturizer(config, vocab)
+    embedding_matrices = preprocessor.build_embedding_matrices(
+        datasets, word_embedding_featurizer, vocab, pretrained_vectors)
+
+    print('Build word extra features...')
+    word_extra_featurizer = WordExtraFeaturizer(config, vocab)
+    word_extra_features = word_extra_featurizer(vocab)
+
+    print('Build models...')
+    word_features_cv = [
+        preprocessor.build_word_features(
+            word_embedding_featurizer, embedding_matrices, word_extra_features)
+        for i in range(config.cv)]
+
+    models = [
+        build_model(
+            config, word_features, sentence_extra_featurizer.n_dims
+        ) for word_features in word_features_cv]
+
+    
 
 
 if __name__ == '__main__':

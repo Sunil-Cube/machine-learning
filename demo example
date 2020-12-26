@@ -124,3 +124,53 @@ tensor([[37, 42,  5, 28, 23, 10,  6, 36,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 
 
 ===================================================================================================
+
+
+print('Load pretrained vectors...')
+
+
+freqs = np.zeros((len(token2id)), dtype='f')  (47 array build)
+
+ex ::: [0.0.0.0............] (47 array build)
+
+len(token2id) :: 47 (our total Build vocabulary)
+
+embed_shape : (47, 300) 
+
+vectors = np.zeros(embed_shape, dtype='f')  (47 rows , 300 column)
+
+
+while iterating one by one our golve embedding and check with exitsing our vocab / tokenids if match then set 
+"1" in freqs array 
+
+example ::  freqs[token2id[token]] += 1
+
+
+while iterating one by one our golve embedding and check with exitsing our vocab / tokenids if match then set 
+full vector in vectors(same tokenids ex:::: token2id[token]  )
+
+
+example :::
+
+o = "the 1 2 3 4 5 ...300" ----- is len(301)
+
+token, *vector = o.split(' ')
+
+token value is :: the
+
+vector value is :: [1,2,3,4,5....300] that formar is basically list so need to convert into numpy array for shape 
+
+ex .. :  np.array(vector, 'f')
+we can check np.array(vector, 'f').shape is  (300)
+
+then assign vector to vectors 
+
+vectors[token2id[token]] += np.array(vector, 'f')
+
+
+
+
+
+
+
+

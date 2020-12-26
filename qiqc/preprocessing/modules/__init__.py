@@ -15,3 +15,6 @@ from qiqc.preprocessing.modules.featurizers.word_embedding_features import FastT
 from qiqc.preprocessing.modules.normalizers.rulebase import cylower  # NOQA
 from qiqc.preprocessing.modules.tokenizers.word import cysplit  # NOQA
 
+from qiqc.preprocessing.modules.featurizers.pretrained_vector import load_pretrained_vectors  # NOQA
+
+
