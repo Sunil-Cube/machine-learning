@@ -14,6 +14,10 @@
 13. np.empty
 14. np.sqrt
 15. np.exp
+16. np.all
+17. np.random.normal
+18. np.array_split
+19. numpy.get_include()
 
 1. torch.sigmoid
 2. torch.cat
