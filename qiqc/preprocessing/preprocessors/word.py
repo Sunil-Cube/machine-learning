@@ -46,8 +46,13 @@ class WordbasedPreprocessor():
 
     def build_embedding_matrices(self, datasets, word_embedding_featurizer,
                                  vocab, pretrained_vectors):
-        pretrained_vectors_merged = np.stack(
-            [wv.vectors for wv in pretrained_vectors.values()]).mean(axis=0)
+
+        test = []
+        for wv in pretrained_vectors.values():
+            test += [wv.vectors]
+
+        pretrained_vectors_merged = np.stack(test).mean(axis=0)
+
         vocab.unk = (pretrained_vectors_merged == 0).all(axis=1)
         vocab.known = ~vocab.unk
         embedding_matrices = word_embedding_featurizer(

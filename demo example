@@ -168,6 +168,19 @@ then assign vector to vectors
 vectors[token2id[token]] += np.array(vector, 'f')
 
 
+- vectors[freqs != 0] /= freqs[freqs != 0][:, None] 
+
+select value from numpy array (freqs) based on condition is not equals 0  . than change shape example 
+
+freqs[freqs != 0][:, None] - same as "numpy.vstack(freqs[freqs != 0])" 
+
+
+#one = vectors[freqs != 0]
+vectors[freqs != 0] /= freqs[freqs != 0][:, None]
+#two = vectors[freqs != 0]
+#result = one == two
+#print("after::::", result.all())  # so basically we can see there is no any change is there between one to two vector  
+
 
 
 
