@@ -53,6 +53,7 @@ class WordbasedPreprocessor():
 
         pretrained_vectors_merged = np.stack(test).mean(axis=0)
 
+        print(pretrained_vectors_merged)
         vocab.unk = (pretrained_vectors_merged == 0).all(axis=1)
         vocab.known = ~vocab.unk
         embedding_matrices = word_embedding_featurizer(

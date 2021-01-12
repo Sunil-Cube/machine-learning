@@ -63,7 +63,7 @@ self.token2id
 ================================================================================================
 ================================================
 
-print('Build token ids...') it's basically arrange "sentance with token-id"
+********** print('Build token ids...') it's basically arrange "sentance with token-id"
 
 print(tokenids)
 
@@ -96,11 +96,25 @@ ApplyNdArray accept function same as return function  .
 ======================================================================
 
 
-in def build(self, device)
 
+*************** print('Build sentence extra features...')
+
+n_dims = 0 
+
+
+*******************  preprocessor.build_sentence_features
+
+
+train_dataset._X2 it's basically retun [] - ndarray(2, 0)
+
+
+********[d.build(config.device) for d in datasets]
+
+in def build(self, device)
 
 self.X tensor
 ============
+
 
 tensor([[37, 42,  7,  3, 26, 14, 45, 12,  4, 34, 18, 22, 17,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -110,7 +124,6 @@ tensor([[37, 42,  7,  3, 26, 14, 45, 12,  4, 34, 18, 22, 17,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]])
-
 
 
 tensor([[37, 42,  5, 28, 23, 10,  6, 36,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -126,7 +139,7 @@ tensor([[37, 42,  5, 28, 23, 10,  6, 36,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 ===================================================================================================
 
 
-print('Load pretrained vectors...')
+****************print('Load pretrained vectors...')
 
 
 freqs = np.zeros((len(token2id)), dtype='f')  (47 array build)
@@ -147,7 +160,7 @@ example ::  freqs[token2id[token]] += 1
 
 
 while iterating one by one our golve embedding and check with exitsing our vocab / tokenids if match then set 
-full vector in vectors(same tokenids ex:::: token2id[token]  )
+full vector in vectors(same tokenids ex:::: token2id[token] )
 
 
 example :::
@@ -167,19 +180,73 @@ then assign vector to vectors
 
 vectors[token2id[token]] += np.array(vector, 'f')
 
-
 - vectors[freqs != 0] /= freqs[freqs != 0][:, None] 
 
 select value from numpy array (freqs) based on condition is not equals 0  . than change shape example 
 
 freqs[freqs != 0][:, None] - same as "numpy.vstack(freqs[freqs != 0])" 
 
-
 #one = vectors[freqs != 0]
 vectors[freqs != 0] /= freqs[freqs != 0][:, None]
 #two = vectors[freqs != 0]
 #result = one == two
 #print("after::::", result.all())  # so basically we can see there is no any change is there between one to two vector  
+
+
+#KeyedVectors gensim - models keyvectors
+
+class Word2VecKeyedVectors :::::::
+ |  Mapping between words and vectors for the :class:`~gensim.models.Word2Vec` model.
+ |  Used to perform operations on the vectors such as vector lookup, distance, similarity etc.
+
+
+vec = KeyedVectors(300)
+add(entities, weights, replace=False) method of gensim.models.keyedvectors.Word2VecKeyedVectors instance
+
+
+Parameters
+----------
+entities : list of str
+    Entities specified by string ids.
+weights: {list of numpy.ndarray, numpy.ndarray}
+    List of 1D np.array vectors or a 2D np.array of vectors.
+replace: bool, optional
+    Flag indicating whether to replace vectors for entities which already exist in the vocabulary,
+    if True - replace vectors, otherwise - keep old vectors.
+
+
+
+*******************print('Build word embedding matrix...')
+
+
+example 
+import numpy as np
+a1 = np.array([1,2,3])
+a2 = np.array([4,5,6])
+np.stack(a1,a2)
+output :: 
+
+array([[1, 2, 3],
+       [4, 5, 6]])
+
+np.stack((a1,a2)).mean(axis=0)
+output :: array([2.5, 3.5, 4.5])
+
+
+a3 = np.array([7,8,0])
+r1 = np.stack((a1,a2,a3))
+
+(r1 == 0).all(axis=0)
+(r1 == 0).all(axis=1)
+
+false to true ==> true to false
+
+it's is basically tilde sign = ~(r1==0).all(axis=1)
+
+
+
+
+
 
 
 

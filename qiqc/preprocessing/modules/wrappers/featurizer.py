@@ -71,6 +71,8 @@ class SentenceExtraFeaturizerWrapper(object):
         self.featurizers = {
             k: self.registry[k]() for k in config.sentence_extra_features}
         self.n_dims = sum(list(f.n_dims for f in self.featurizers.values()))
+        print(self.n_dims)
+
 
     @classmethod
     def add_args(cls, parser):

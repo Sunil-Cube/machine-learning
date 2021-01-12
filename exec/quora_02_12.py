@@ -165,6 +165,8 @@ def train(config, modules):
     train_dataset._X2, test_dataset._X2, submit_dataset._X2 = \
         preprocessor.build_sentence_features(datasets, sentence_extra_featurizer)
 
+    print(train_dataset._X2)
+
     #in def build(self, device) convert array to tensor
     [d.build(config.device) for d in datasets]
 
@@ -181,18 +183,21 @@ def train(config, modules):
     word_extra_featurizer = WordExtraFeaturizer(config, vocab)
     word_extra_features = word_extra_featurizer(vocab)
 
-    print('Build models...')
-    word_features_cv = [
-        preprocessor.build_word_features(
-            word_embedding_featurizer, embedding_matrices, word_extra_features)
-        for i in range(config.cv)]
 
-    models = [
-        build_model(
-            config, word_features, sentence_extra_featurizer.n_dims
-        ) for word_features in word_features_cv]
 
-    
+
+    # print('Build models...')
+    # word_features_cv = [
+    #     preprocessor.build_word_features(
+    #         word_embedding_featurizer, embedding_matrices, word_extra_features)
+    #     for i in range(config.cv)]
+    #
+    # models = [
+    #     build_model(
+    #         config, word_features, sentence_extra_featurizer.n_dims
+    #     ) for word_features in word_features_cv]
+    #
+    #
 
 
 if __name__ == '__main__':
