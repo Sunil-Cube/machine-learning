@@ -247,6 +247,35 @@ it's is basically tilde sign = ~(r1==0).all(axis=1)
 
 
 
+==========================================================================
+
+
+question ::: some basic understanding ... how to call WordbasedPreprocessor class using Preprocessor obj ?
+
+ans :: Preprocessor -> PreprocessorPresets -> WordbasedPreprocessor (class inhertance)
+
+
+question :: baisc flow of program
+
+ans :: models -> config -> presets -> 1. config
+									  2. preprocessing -> registry
+									  3. modules 
+
+
+
+
+path set:: -m models / baseline / v1-8-1-bilstm-w2v-rnd.py (pre-loading part)
+
+1. config-builder base arguments 
+2. load presets-v1-8-1-bilstm-w2v-rnd.py 
+	1. load config  2. load preprocessing modules 
+	-> text normalizer , text-tokenlizer wrapper , word embedding feature, word extra feature wrapper , sentence extra feature wrapper, 
+
+
+
+
+
+
 
 
 
