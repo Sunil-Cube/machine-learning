@@ -34,8 +34,17 @@ class WordEmbeddingFeaturizerWrapper(object):
         parser.set_defaults(**cls.default_extra_config)
 
     def __call__(self, features, datasets):
-        return {k: feat(features, datasets)
-                for k, feat in self.featurizers.items()}
+        #features = pretrained_vectors_merged
+        #featurizers = 1
+        # 1 . ('pretrained', <qiqc.preprocessing.modules.featurizers.word_embedding_features.PretrainedVectorFeaturizer object)
+        # 2. ('word2vec', <qiqc.preprocessing.modules.featurizers.word_embedding_features.Word2VecFeaturizer object )
+        k_dict = {}
+        for k, feat in self.featurizers.items():
+            k_dict.update({k: feat(features, datasets)})
+        return k_dict
+
+        #return {k: feat(features, datasets)
+        #    for k, feat in self.featurizers.items()}
 
 
 class WordExtraFeaturizerWrapper(object):

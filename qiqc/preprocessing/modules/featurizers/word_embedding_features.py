@@ -42,6 +42,7 @@ class Any2VecFeaturizer(object):
         tokens = np.concatenate([d.tokens for d in datasets])
         model = self.build_model()
         model.build_vocab_from_freq(self.vocab.word_freq)
+        # features = pretrained_vectors_merged
         initialW = features.copy()
         initialW[self.vocab.unk] = self.build_fillvalue(
             self.config.finetune_word2vec_init_unk, initialW)

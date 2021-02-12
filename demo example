@@ -244,6 +244,39 @@ false to true ==> true to false
 it's is basically tilde sign = ~(r1==0).all(axis=1)
 
 
+== embedding_matrices = word_embedding_featurizer(pretrained_vectors_merged, datasets)
+
+__call__ method ::: we are used basic call method to call different instances with pass value 
+
+- class Example:
+    def __init__(self):
+        print("Instance Created")
+
+    # Defining __call__ method
+    def __call__(self):
+        print("Instance is called via special method")
+
+# Instance created
+e = Example()
+
+# __call__ method will be called
+e()
+
+
+# __call__ method of class WordEmbeddingFeaturizerWrapper in - featurizer.py
+#features = pretrained_vectors_merged
+#featurizers = 1
+# 1 . ('pretrained', <qiqc.preprocessing.modules.featurizers.word_embedding_features.PretrainedVectorFeaturizer object)
+# 2. ('word2vec', <qiqc.preprocessing.modules.featurizers.word_embedding_features.Word2VecFeaturizer object )
+
+
+
+== feat-> self.featurizers.items() ==>  word_embedding_features.Word2VecFeaturizer ==> __call__ method
+
+
+
+
+
 
 
 
@@ -272,7 +305,7 @@ path set:: -m models / baseline / v1-8-1-bilstm-w2v-rnd.py (pre-loading part)
 	-> text normalizer , text-tokenlizer wrapper , word embedding feature, word extra feature wrapper , sentence extra feature wrapper, 
 
 
-
+=========================================================================================
 
 
 

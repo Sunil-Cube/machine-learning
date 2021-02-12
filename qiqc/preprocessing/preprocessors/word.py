@@ -56,6 +56,9 @@ class WordbasedPreprocessor():
         print(pretrained_vectors_merged)
         vocab.unk = (pretrained_vectors_merged == 0).all(axis=1)
         vocab.known = ~vocab.unk
+
+        #we are used basic call method to call different instances with pass value ...
+        # __call__ method of class WordEmbeddingFeaturizerWrapper in - featurizer.py
         embedding_matrices = word_embedding_featurizer(
             pretrained_vectors_merged, datasets)
         return embedding_matrices
