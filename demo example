@@ -273,8 +273,7 @@ e()
 
 == feat-> self.featurizers.items() ==>  word_embedding_features.Word2VecFeaturizer ==> __call__ method
 
-
-
+question ::: how to call Any2VecFeaturizer class insteadof word2vec ..?
 
 
 
@@ -291,10 +290,24 @@ ans :: Preprocessor -> PreprocessorPresets -> WordbasedPreprocessor (class inher
 question :: baisc flow of program
 
 ans :: models -> config -> presets -> 1. config
-									  2. preprocessing -> registry
-									  3. modules 
+					                           2. preprocessing -> registry
+					                           3. modules 
 
 
+
+=================
+
+1. quora_02_12.py 
+
+2. load v1_8_1_bilstm_w2v_rnd.py using importlib lib ...it just template of all class 
+
+3. then call --- class ExperimentConfigBuilder (build method) from config file
+3.1 self.default_config is set while load file v1_8_1_bilstm_w2v_rnd.py 
+3.2 cls.default_config and cls.registry is class method attributes .
+
+4. build method call each modules of "add_args" module method 
+
+5. build method call each modules of cls.default_extra_config is set while load file v1_8_1_bilstm_w2v_rnd.py via calling add_extra_args . (similar calling pattern add_args)
 
 
 path set:: -m models / baseline / v1-8-1-bilstm-w2v-rnd.py (pre-loading part)
