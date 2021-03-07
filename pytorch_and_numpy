@@ -18,6 +18,8 @@
 17. np.random.normal
 18. np.array_split
 19. numpy.get_include()
+20. numpy.fill()
+21. numpy.copy()
 
 1. torch.sigmoid
 2. torch.cat
