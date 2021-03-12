@@ -60,12 +60,26 @@ self.token2id
 
 {'giant': 1, 'dislike': 10, 'choose': 3, 'than': 4, 'zainichi': 5, 'anton': 6, 'we': 7, 'examination': 8, 'questions': 9, 'university': 11, 'rather': 12, 'in': 13, 'tolerate': 14, 'delhi': 40, 'does': 16, 'feelings': 17, 'science': 41, 'conspiracy': 19, 'what': 20, 'ask': 21, 'own': 22, 'follow': 34, '在日朝鮮人／韓国人': 23, 'you': 24, 'english': 43, 'the': 25, 'to': 26, 'm': 27, 'koreans': 28, 'maths': 29, 'general': 30, 'about': 31, 'trees': 32, 'think': 33, 'subjects': 2, 'antenorcruz': 36, 'from': 35, 'why': 37, 'entrance': 38, 'like': 39, 'a': 15, 'our': 18, 'do': 42, '<PAD>': 0, 'aptitude': 44, 'things': 45, 'petrified': 46}
 
+
+self.lfq 
+
+its basically check with condition less then mincount value (its 5) based on that prepare boolean value 
+
+self.hfq
+
+its basically return false value greaterthen value mincount with boolean value 
+
 ================================================================================================
 ================================================
 
 ********** print('Build token ids...') it's basically arrange "sentance with token-id"
 
-print(tokenids)
+print(tokenids) it's return list 3 array (train_dataset.tids , test_dataset.tids, submit_dataset.tids)
+
+in config maxlen - 72
+
+train_dataset.tids define shape is (2,72) .. variable assign value into "tids"
+
 
 [array([[37, 42,  7,  3, 26, 14, 45, 12,  4, 34, 18, 22, 17,  0,  0,  0,
          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -112,6 +126,11 @@ train_dataset._X2 it's basically retun [] - ndarray(2, 0)
 
 in def build(self, device)
 
+access self.tids (basically its ndarray type) and convert into tensor ...same to work on df.target and df.weight variable also convert type into tensor  .
+
+self._t, self._W , self.t, self.W
+
+
 self.X tensor
 ============
 
@@ -140,6 +159,19 @@ tensor([[37, 42,  5, 28, 23, 10,  6, 36,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 
 
 ****************print('Load pretrained vectors...')
+
+load pretrained vectors pass ::: 1. config of pretrained vectors 2. vocab.token2id 3. 
+
+ex:: 
+
+
+config of pretrained vectors :: glove
+
+
+vocab.token2id
+
+{'giant': 1, 'dislike': 10, 'choose': 3, 'than': 4, 'zainichi': 5, 'anton': 6, 'we': 7, 'examination': 8, 'questions': 9, 'university': 11, 'rather': 12, 'in': 13, 'tolerate': 14, 'delhi': 40, 'does': 16, 'feelings': 17, 'science': 41, 'conspiracy': 19, 'what': 20, 'ask': 21, 'own': 22, 'follow': 34, '在日朝鮮人／韓国人': 23, 'you': 24, 'english': 43, 'the': 25, 'to': 26, 'm': 27, 'koreans': 28, 'maths': 29, 'general': 30, 'about': 31, 'trees': 32, 'think': 33, 'subjects': 2, 'antenorcruz': 36, 'from': 35, 'why': 37, 'entrance': 38, 'like': 39, 'a': 15, 'our': 18, 'do': 42, '<PAD>': 0, 'aptitude': 44, 'things': 45, 'petrified': 46}
+
 
 
 freqs = np.zeros((len(token2id)), dtype='f')  (47 array build)
@@ -219,6 +251,10 @@ replace: bool, optional
 *******************print('Build word embedding matrix...')
 
 
+question ::: how to call Any2VecFeaturizer class insteadof @word2vec / Word2VecFeaturizer class..?
+ans ::  basically its simple inhertance is there and in word2vecfeaturizer class is not there init method so An2vecfeaturizer class contains init method so class of An2vecfeaturizer init method is directly call .
+
+
 example 
 import numpy as np
 a1 = np.array([1,2,3])
@@ -239,8 +275,13 @@ r1 = np.stack((a1,a2,a3))
 (r1 == 0).all(axis=0)
 (r1 == 0).all(axis=1)
 
-false to true ==> true to false
 
+false to true ==> true to false
+ex::
+
+ac = np.array([True,False,True])
+~ac
+array([False,  True, False])
 it's is basically tilde sign = ~(r1==0).all(axis=1)
 
 
@@ -270,10 +311,32 @@ e()
 # 2. ('word2vec', <qiqc.preprocessing.modules.featurizers.word_embedding_features.Word2VecFeaturizer object )
 
 
-
 == feat-> self.featurizers.items() ==>  word_embedding_features.Word2VecFeaturizer ==> __call__ method
 
-question ::: how to call Any2VecFeaturizer class insteadof word2vec ..?
+
+== initialW = features.copy()
+
+import numpy
+a = numpy.array([[0,1,2,3],[4,5,6,7]])
+b= a.copy()
+a.fill(1)
+print(a)
+print(b)
+
+
+== np.zeros(n_embed, 'f') in build_fillvalue function file name is word_embedding_features.py
+
+'f' , 'c' - it's order
+
+d = numpy.zeros(3) not adding dtype
+  array([0., 0., 0.])
+
+d = numpy.zeros(3,'c') - its order in row wise
+  array([b'', b'', b''], dtype='|S1')
+
+d = numpy.zeros(3,'f') its order in columns wise
+  array([0., 0., 0.], dtype=float32)
+
 
 
 
