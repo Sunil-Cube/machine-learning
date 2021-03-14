@@ -225,6 +225,17 @@ vectors[freqs != 0] /= freqs[freqs != 0][:, None]
 #print("after::::", result.all())  # so basically we can see there is no any change is there between one to two vector  
 
 
+- dividing-numpy-array-by-numpy-array , dividing-numpy-array-by-numpy-scalar
+a = np.array([[1.0,2.0],[3.9,4.9]])
+b = np.array([1.0,1.0])
+b=np.vstack(b)
+a /= b
+a
+
+
+
+after vectors ready we can put into words with vecotors into Word2VecKeyedVectors class
+
 #KeyedVectors gensim - models keyvectors
 
 class Word2VecKeyedVectors :::::::
@@ -253,6 +264,9 @@ replace: bool, optional
 
 question ::: how to call Any2VecFeaturizer class insteadof @word2vec / Word2VecFeaturizer class..?
 ans ::  basically its simple inhertance is there and in word2vecfeaturizer class is not there init method so An2vecfeaturizer class contains init method so class of An2vecfeaturizer init method is directly call .
+
+
+in build_embedding_matrices method first we get vectors from "pretrained_vectors.values()" assign value to "test" list varaible .
 
 
 example 
@@ -338,7 +352,16 @@ d = numpy.zeros(3,'f') its order in columns wise
   array([0., 0., 0.], dtype=float32)
 
 
+***************************print('Build word extra features...')
 
+aa= np.array([[1,2,3,4],[11,12,13,14]])
+aa.shape  = (2,4) (row, columns)
+axis = 0 - row
+axis =1 - columns
+
+
+aa=np.empty([5,0])
+np.concatenate([aa,*[]], axis=1)
 
 
 
