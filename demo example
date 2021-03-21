@@ -364,6 +364,108 @@ aa=np.empty([5,0])
 np.concatenate([aa,*[]], axis=1)
 
 
+***************************print('Build models...')
+
+#build_word_features method ::
+
+import numpy as np
+
+a = np.array([[1,2,3,4,5],[6,7,8,9,10]])
+b = np.array([[11,12,13,14,15],[16,17,18,19,20]])
+
+embedding_matrices = {}
+embedding_matrices.update({'word2vec':a})
+embedding_matrices.update({'pretrained':b})
+
+embedding_matrices.values()
+
+list(embedding_matrices.values())
+
+embedding = np.stack(list(embedding_matrices.values()))
+
+ouput::
+array([[[ 1,  2,  3,  4,  5],
+        [ 6,  7,  8,  9, 10]],
+
+       [[11, 12, 13, 14, 15],
+        [16, 17, 18, 19, 20]]])
+
+
+shape = (2,2,5)
+
+
+embedding[0]:::
+
+array([[ 1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10]])
+
+(embedding[0]==0):::
+
+array([[False, False, False, False, False],
+       [False, False, False, False, False]])
+
+
+(embedding[0]==0).all(axis=1) ::
+
+select value in columns wise ->::::   array([False, False])
+
+unk = (embedding[0]==0).all(axis=1)
+
+
+embedding[0, ~unk].mean() ::::
+
+embedding[0] :::
+
+array([[ 1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10]])
+
+embedding[0,[0]]:::
+array([[1, 2, 3, 4, 5]])
+
+embedding[0,[0,1]]:::
+
+array([[ 1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10]])
+
+ embedding[0,~unk]:::
+
+ array([[ 1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10]])
+
+
+embedding[0,~unk].mean()::: we can get some value same in with std method value
+
+import numpy as np
+
+a = np.array([True, False, True])
+b = np.array([True, False, True])
+
+c = a & b
+array([True, False,  True])
+
+c.sum()
+
+noise = np.random.normal(-0.555, 0.35, (2, 5))
+output :::
+array([[-0.18526755, -0.56126516, -0.97014321,  0.13139335, -0.45458216],
+       [-0.23502603, -0.71499231, -0.86441308, -0.48076677,  0.2464266 ]])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ==========================================================================
 

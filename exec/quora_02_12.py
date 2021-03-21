@@ -183,21 +183,18 @@ def train(config, modules):
     word_extra_featurizer = WordExtraFeaturizer(config, vocab)
     word_extra_features = word_extra_featurizer(vocab)
 
+    print('Build models...')
+    word_features_cv = [
+        preprocessor.build_word_features(
+            word_embedding_featurizer, embedding_matrices, word_extra_features)
+        for i in range(config.cv)]
+
+    models = [
+        build_model(
+            config, word_features, sentence_extra_featurizer.n_dims
+        ) for word_features in word_features_cv]
 
 
-
-    # print('Build models...')
-    # word_features_cv = [
-    #     preprocessor.build_word_features(
-    #         word_embedding_featurizer, embedding_matrices, word_extra_features)
-    #     for i in range(config.cv)]
-    #
-    # models = [
-    #     build_model(
-    #         config, word_features, sentence_extra_featurizer.n_dims
-    #     ) for word_features in word_features_cv]
-    #
-    #
 
 
 if __name__ == '__main__':
