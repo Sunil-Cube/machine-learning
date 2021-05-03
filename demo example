@@ -452,6 +452,20 @@ array([[-0.18526755, -0.56126516, -0.97014321,  0.13139335, -0.45458216],
 
 
 
+******************build_model()
+
+
+build model have steps before move into starting tranining to machine learning model ::
+
+1. embedding 2. encoder 3. Aggregator 4. MLP (nlp move to machine language processing ) 
+5. ouput (nn.linear) 6. lossfunc
+
+need steps with debug points pass so basically clear understanding .
+
+
+
+
+
 
 
 

@@ -194,6 +194,20 @@ def train(config, modules):
             config, word_features, sentence_extra_featurizer.n_dims
         ) for word_features in word_features_cv]
 
+    print('Start training...')
+    splitter = sklearn.model_selection.StratifiedKFold(
+        n_splits=config.cv, shuffle=True, random_state=config.seed)
+
+    train_results, valid_results = [], []
+    best_models = []
+
+    for i_cv, (train_indices, valid_indices) in enumerate(
+            splitter.split(train_dataset.df, train_dataset.df.target)):
+        if config.cv_part is not None and i_cv >= config.cv_part:
+            break
+
+        train_tensor = train_dataset.build_labeled_dataset(train_indices)
+        valid_tensor = train_dataset.build_labeled_dataset(valid_indices)
 
 
 

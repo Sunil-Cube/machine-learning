@@ -1,0 +1,57 @@
+
+
+basic steps debugging in neural network ::::
+
+https://towardsdatascience.com/debugging-neural-networks-with-pytorch-and-w-b-2e20667baf72
+
+https://blog.cardiogr.am/4-ways-to-debug-your-deep-neural-network-e5edb14a12d7
+
+https://www.analyticsvidhya.com/blog/2017/07/debugging-neural-network-with-tensorboard/
+
+
+https://jameskle.com/writes/troubleshooting-deep-neural-networks
+
+
+https://www.digitalocean.com/community/tutorials/introduction-to-pytorch-build-a-neural-network-to-recognize-handwritten-digits
+
+
+https://www.tutorialspoint.com/pytorch/pytorch_quick_guide.htm
+
+https://www.tutorialspoint.com/pytorch/pytorch_terminologies.htm
+
+https://github.com/jcjohnson/pytorch-examples
+
+computational graph pytorch github example:::
+
+https://medium.com/@BhashkarKunal/pytorch-tutorial-from-basic-to-advance-level-a-numpy-replacement-and-deep-learning-framework-that-a3c8dcf9a9d4
+
+
+pytorch with tensorboard:::
+
+pytorch tensorboard in youtube 
+https://www.youtube.com/watch?v=VJW9wU-1n18
+
+https://ask.csdn.net/questions/7339156
+
+
+error resolved ::: It may also due to the version of tensorboard diverses from the tensorflow version. I solved it by pip uninstall tensorboard and pip install tensorboard==YOUR_TF_VERSION
+
+Can you please try pip uninstall tensorboard && pip install tensorboard?
+
+::: must be writer.close() method call in last of code finished
+
+1. pytorch tensorboard graph is empty
+2. 
+
+
+https://pytorch.org/tutorials/intermediate/tensorboard_tutorial.html :: pytorch neural network visualization
+
+https://stackoverflow.com/questions/52468956/how-do-i-visualize-a-net-in-pytorch (netron)
+
+https://www.programmersought.com/article/51475116122/ (programmersought - example of netron )
+
+https://blog.paperspace.com/pytorch-101-understanding-graphs-and-automatic-differentiation/
+
+
+https://github.com/llSourcell/how_to_use_tensorboard_live/blob/master/mnist.py
+

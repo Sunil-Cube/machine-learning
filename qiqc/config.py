@@ -20,7 +20,7 @@ class ExperimentConfigBuilderBase(metaclass=ABCMeta):
         parser.add_argument('--optuna-trials', type=int)
         parser.add_argument('--gridsearch', action='store_true')
         parser.add_argument('--holdout', action='store_true')
-        parser.add_argument('--cv', type=int, default=5)
+        parser.add_argument('--cv', type=int, default=2)
         parser.add_argument('--cv-part', type=int)
         parser.add_argument('--processes', type=int, default=2)
 
