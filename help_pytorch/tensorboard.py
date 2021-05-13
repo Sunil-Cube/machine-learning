@@ -60,7 +60,12 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size,
                                           shuffle=False)
 
+
 examples = iter(test_loader)
+
+print(examples)
+print(">>>>>>>>>>>>>>>>>>>>>>",input())
+
 example_data, example_targets = examples.next()
 
 for i in range(6):

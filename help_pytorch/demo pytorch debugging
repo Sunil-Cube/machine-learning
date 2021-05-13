@@ -55,3 +55,7 @@ https://blog.paperspace.com/pytorch-101-understanding-graphs-and-automatic-diffe
 
 https://github.com/llSourcell/how_to_use_tensorboard_live/blob/master/mnist.py
 
+
+### data loaders
+https://www.scottcondron.com/jupyter/visualisation/audio/2020/12/02/dataloaders-samplers-collate.html
+

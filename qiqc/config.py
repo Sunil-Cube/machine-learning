@@ -25,11 +25,11 @@ class ExperimentConfigBuilderBase(metaclass=ABCMeta):
         parser.add_argument('--processes', type=int, default=2)
 
         parser.add_argument('--lr', type=float, default=1e-3)
-        parser.add_argument('--batchsize', type=int, default=512)
-        parser.add_argument('--batchsize-valid', type=int, default=1024)
+        parser.add_argument('--batchsize', type=int, default=2)
+        parser.add_argument('--batchsize-valid', type=int, default=4)
         parser.add_argument('--scale-batchsize', type=int, nargs='+',
                             default=[])
-        parser.add_argument('--epochs', type=int, default=5)
+        parser.add_argument('--epochs', type=int, default=1)
         parser.add_argument('--validate-from', type=int)
         parser.add_argument('--pos-weight', type=float, default=1.)
         parser.add_argument('--maxlen', type=float, default=72)

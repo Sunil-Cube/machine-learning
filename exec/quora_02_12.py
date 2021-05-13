@@ -31,6 +31,8 @@ from torch.utils.data import DataLoader, WeightedRandomSampler
 from tqdm import tqdm
 
 from qiqc.preprocessing.modules import load_pretrained_vectors
+from qiqc.training import classification_metrics, ClassificationResult
+
 
 
 #import pyximport; pyximport.install() #one way to build cpython
@@ -109,6 +111,11 @@ class QIQCDataset(object):
             self._X2 = np.zeros((self._X.shape[0], 1), 'f')
             self.X2 = torch.Tensor(self._X2).type(torch.float).to(device)
 
+    def build_labeled_dataset(self, indices):
+        return torch.utils.data.TensorDataset(
+            self.X[indices], self.X2[indices],
+            self.t[indices], self.W[indices])
+
 
 
 
@@ -140,7 +147,7 @@ def train(config, modules):
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
     #train_df, submit_df = load_qiqc(n_rows=config.n_rows)
-    train_df, submit_df = load_qiqc(n_rows=2)
+    train_df, submit_df = load_qiqc(n_rows=4)
     datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
 
     train_dataset, test_dataset, submit_dataset = datasets
@@ -208,6 +215,36 @@ def train(config, modules):
 
         train_tensor = train_dataset.build_labeled_dataset(train_indices)
         valid_tensor = train_dataset.build_labeled_dataset(valid_indices)
+
+        model = models.pop(0)
+        model = model.to_device(config.device)
+        model_snapshots = []
+        optimizer = torch.optim.Adam(model.parameters(), config.lr)
+        train_result = ClassificationResult('train', config.outdir, str(i_cv))
+        valid_result = ClassificationResult('valid', config.outdir, str(i_cv))
+
+        batchsize = config.batchsize
+
+        for epoch in range(config.epochs):
+            if epoch in config.scale_batchsize:
+                batchsize *= 2
+                print('Batchsize: {}'.format(batchsize))
+            epoch_start = time.time()
+            sampler = None
+            train_iter = DataLoader(
+                train_tensor, sampler=sampler, drop_last=True,
+                batch_size=batchsize, shuffle=sampler is None)
+            _summary = []
+
+            for i, batch in enumerate(tqdm(train_iter, desc='train', leave=False)):
+                model.train()
+                optimizer.zero_grad()
+                loss, output = model.calc_loss(*batch)
+                loss.backward()
+                optimizer.step()
+                train_result.add_record(**output)
+                print("-----------in batch")
+
 
 
 
