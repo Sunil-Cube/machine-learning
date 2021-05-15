@@ -147,7 +147,7 @@ def train(config, modules):
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
     #train_df, submit_df = load_qiqc(n_rows=config.n_rows)
-    train_df, submit_df = load_qiqc(n_rows=4)
+    train_df, submit_df = load_qiqc(n_rows=50)
     datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
 
     train_dataset, test_dataset, submit_dataset = datasets
@@ -215,6 +215,8 @@ def train(config, modules):
 
         train_tensor = train_dataset.build_labeled_dataset(train_indices)
         valid_tensor = train_dataset.build_labeled_dataset(valid_indices)
+        valid_iter = DataLoader(
+            valid_tensor, batch_size=config.batchsize_valid)
 
         model = models.pop(0)
         model = model.to_device(config.device)
@@ -244,6 +246,36 @@ def train(config, modules):
                 optimizer.step()
                 train_result.add_record(**output)
                 print("-----------in batch")
+            train_result.calc_score(epoch)
+            _summary.append(train_result.summary.iloc[-1])
+
+            # Validation loop
+            if epoch >= config.validate_from:
+                for i, batch in enumerate(
+                        tqdm(valid_iter, desc='valid', leave=False)):
+                    model.eval()
+                    loss, output = model.calc_loss(*batch)
+                    valid_result.add_record(**output)
+                valid_result.calc_score(epoch)
+                _summary.append(valid_result.summary.iloc[-1])
+
+                _model = deepcopy(model)
+                _model.threshold = valid_result.summary.threshold[epoch]
+                model_snapshots.append(_model)
+
+            summary = pd.DataFrame(_summary).set_index('name')
+            epoch_time = time.time() - epoch_start
+            pbar = '#' * (i_cv + 1) + '-' * (config.cv - 1 - i_cv)
+
+            tqdm.write('{} cv: {} / {}, epoch {}, time:{}'.format(pbar,i_cv,config.cv,epoch,epoch_time))
+            tqdm.write(str(summary))
+
+        train_results.append(train_result)
+        valid_results.append(valid_result)
+        best_indices = valid_result.summary.fbeta.argsort()[::-1]
+        best_models.extend([model_snapshots[i] for i in
+                            best_indices[:config.ensembler_n_snapshots]])
+
 
 
 
