@@ -258,8 +258,27 @@ replace: bool, optional
     if True - replace vectors, otherwise - keep old vectors.
 
 
+return value is :::: vocab.token2id [rows] * 300 [columsn] 
+
 
 *******************print('Build word embedding matrix...')
+
+
+input is ::: WordEmbeddingFeaturizer(config, vocab)
+
+1. vocab :: Build vocabulary 
+2. config parameter
+
+return output is :::: word_embedding_featurizer
+1.cofig 2.default-config 3.extra_default_config 4.vocab 5.featurizers 6. registry
+
+
+input is ::: preprocessor.build_embedding_matrices(
+        datasets, word_embedding_featurizer, vocab, pretrained_vectors)
+
+ 
+ return output is ::: we have 2 ndarray ..1. pretrained 2. word2vec 
+
 
 
 question ::: how to call Any2VecFeaturizer class insteadof @word2vec / Word2VecFeaturizer class..?
@@ -354,6 +373,22 @@ d = numpy.zeros(3,'f') its order in columns wise
 
 ***************************print('Build word extra features...')
 
+
+input is ::: WordExtraFeaturizer(config, vocab)
+
+1. vocab :: Build vocabulary 
+2. config parameter
+
+return output is :::: word_extra_featurizer
+1.cofig 2.default-config 3.extra_default_config 4.vocab 5.featurizers 6. registry
+
+
+ input ::: word_extra_featurizer(vocab)
+output :::  return output is ::: we have 1 ndarray (47, 0) size
+
+
+
+
 aa= np.array([[1,2,3,4],[11,12,13,14]])
 aa.shape  = (2,4) (row, columns)
 axis = 0 - row
@@ -365,6 +400,18 @@ np.concatenate([aa,*[]], axis=1)
 
 
 ***************************print('Build models...')
+
+
+based on - config.cv parameter we are need at least 2 word features cv so baiscally we are add random noise in data logic inside of build_word_features function 
+
+
+input ::: build_word_features
+1. word_embedding_featurizer 2. embedding_matrices 3. word_extra_features
+
+output :::  return output is ::: we have 2 - ndarray as per config-cv parameter size is (47, 300) 
+
+
+
 
 #build_word_features method ::
 
@@ -453,6 +500,44 @@ array([[-0.18526755, -0.56126516, -0.97014321,  0.13139335, -0.45458216],
 
 
 ******************build_model()
+
+
+input ::: build_model method 
+
+1. as per cv we have 2 ndarray we can pass one by one in form of word_features 2. config 3. sentence_extra_featurizer.n_dims
+
+output :::  return output is ::: we have 2 - as per config-cv parameter we have 2 binarray classifiers with structure of model 
+
+BinaryClassifier(
+  (embedding): Embedding(
+    (module): Embedding(47, 300)
+    (dropout1d): Dropout(p=0.2, inplace=False)
+  )
+  (encoder): Encoder(
+    (module): LSTMEncoder(
+      (rnns): ModuleList(
+        (0): LSTM(300, 128, batch_first=True, bidirectional=True)
+        (1): LSTM(256, 128, batch_first=True, bidirectional=True)
+      )
+    )
+  )
+  (aggregator): Aggregator(
+    (module): MaxPoolingAggregator()
+  )
+  (mlp): MLP(
+    (layers): Sequential(
+      (0): Linear(in_features=256, out_features=128, bias=True)
+      (1): ReLU(inplace=True)
+      (2): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): Linear(in_features=128, out_features=128, bias=True)
+      (4): ReLU(inplace=True)
+      (5): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (out): Linear(in_features=128, out_features=1, bias=True)
+  (lossfunc): BCEWithLogitsLoss()
+)
+
 
 
 build model have steps before move into starting tranining to machine learning model ::

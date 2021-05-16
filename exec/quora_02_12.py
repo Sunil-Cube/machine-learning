@@ -147,7 +147,7 @@ def train(config, modules):
     SentenceExtraFeaturizer = modules.SentenceExtraFeaturizer
 
     #train_df, submit_df = load_qiqc(n_rows=config.n_rows)
-    train_df, submit_df = load_qiqc(n_rows=50)
+    train_df, submit_df = load_qiqc(n_rows=2)
     datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
 
     train_dataset, test_dataset, submit_dataset = datasets
