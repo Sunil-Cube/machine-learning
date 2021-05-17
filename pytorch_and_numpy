@@ -28,7 +28,13 @@
 5. torch.unsqueeze
 6. 
 
+commonly used matrix and vector operations in Pytorch ::::
 
+dot
+kth value
+matmul
+clamp
+matrix_power
 
 
 
