@@ -550,18 +550,107 @@ need steps with debug points pass so basically clear understanding .
 
 
 
+***************************print('Start training...')
+
+splitter :: its return 2 splits becuase of config.cv =2 - StratifiedKFold 
+
+splitter.split ::  iterater both value train and target value ::: train-dataset.df  and train_dataset.df.target
+
+train_indices getting from splitter.split method basically train_indices pass into build_labeled_dataset method 
+
+train_tensor = train_dataset.build_labeled_dataset(train_indices) ::  build_labeled_dataset method return for value 
+
+1. tokens's  tokens-ids
+
+train_iter = DataLoader(train_tensor, sampler=sampler, batch_size=batchsize)
+valid_iter = DataLoader(valid_tensor, batch_size=config.batchsize_valid)
+
+
+-- dataloader object contains train_tensor as "datatset" attribute also others attributes are there .
+
+1. tokens | tokens-ids 2. tokens | tokesns-ids 3. target 4. weights 
+
+then iter using forloop --- train_iter variable and inside forloop we call model.train() and optimizaers and calculate loss and outout as per batch wise .
+
+loss, output = model.calc_loss(*batch)
+
+X = (token_ids, max_len) , (16, 72)
+
+
+predict_features(self, X, X2):  (basically used in :: numpy)
+
+example ::::
+
+import numpy as np
+
+X = np.array([[1,2,3,4,5],[6,7,8,9,10], [0,0,0,0,0], [1,1,0,0,0], [0,0,0,0,0]])
+
+mask = X != 0
+
+output :  array([[ True,  True,  True,  True,  True],
+       [ True,  True,  True,  True,  True],
+       [False, False, False, False, False],
+       [ True,  True, False, False, False],
+       [False, False, False, False, False]])
+
+
+
+maxlen = (mask == 1).any(axis=0).sum()
+
+output ::5
+
+X = X[:, :maxlen]
+
+output ::: array([[ 1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10],
+       [ 0,  0,  0,  0,  0],
+       [ 1,  1,  0,  0,  0],
+       [ 0,  0,  0,  0,  0]])
+
+mask = mask[:, :maxlen]
+
+output:: array([[ True,  True,  True,  True,  True],
+       [ True,  True,  True,  True,  True],
+       [False, False, False, False, False],
+       [ True,  True, False, False, False],
+       [False, False, False, False, False]])
+
+
+h = self.embedding(X) 
+
+X is basically its tensor value ..while pass tensor into embedding forward then we can getting h variable (hidden weights)
 
 
 
 
+======example with torch
 
 
+import torch
+X = torch.tensor([[1,2,3,4,5],[6,7,8,9,10], [0,0,0,0,0], [1,1,0,0,0], [0,0,0,0,0]])
+
+mask = X != 0
+
+maxlen = (mask == 1).any(dim=0).sum()
+output:: tensor(5)
+
+X = X[:, :maxlen]
+
+mask = mask[:, :maxlen]
 
 
+masked-attention ::: http://juditacs.github.io/2018/12/27/masked-attention.html
 
 
+X
+tensor([[ 1,  2,  3,  4,  5],
+        [ 6,  7,  8,  9, 10],
+        [ 0,  0,  0,  0,  0],
+        [ 1,  1,  0,  0,  0],
+        [ 0,  0,  0,  0,  0]])
 
 
+h = hs.max(dim=1)[0] 
 
 
 
