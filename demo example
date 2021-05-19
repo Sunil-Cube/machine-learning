@@ -653,6 +653,27 @@ tensor([[ 1,  2,  3,  4,  5],
 h = hs.max(dim=1)[0] 
 
 
+masked example :::
+
+X = torch.tensor([[1.9999,2.121212,3.4555,4.66644,5.45363],[6.1212,7.8887,8.33333,9.3663636,10.111111], [0,0,0,0,0], [1.1212,1.3433,0,0,0], [0,0,0,0,0]])
+
+mask = X != 0
+
+maxlen = (mask == 1).any(dim=0).sum()
+
+X = X[:, :maxlen]
+
+mask = mask[:, :maxlen]
+
+X.masked_fill(~mask.unsqueeze(2), -np.inf) 
+
+another synatax of mask value fill it :: X[~mask] = float('-inf')
+
+X.max(dim=1)[0]
+
+
+
+
 
 
 
