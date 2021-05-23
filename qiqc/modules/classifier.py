@@ -6,11 +6,14 @@ class BinaryClassifier(nn.Module):
 
     default_config = None
 
-    def __init__(self, embedding, encoder, aggregator, mlp, out, lossfunc):
+    def __init__(self, embedding, encoder,
+                 #aggregator,
+                 feature_dense, mlp, out, lossfunc):
         super().__init__()
         self.embedding = embedding
         self.encoder = encoder
-        self.aggregator = aggregator
+        #self.aggregator = aggregator
+        self.feature_dense = feature_dense
         self.mlp = mlp
         self.out = out
         self.lossfunc = lossfunc
@@ -48,7 +51,8 @@ class BinaryClassifier(nn.Module):
 
         h = self.embedding(X)
         h = self.encoder(h, mask)
-        h = self.aggregator(h, mask)
+        #h = self.aggregator(h, mask)
+        h = self.feature_dense(h, mask)
         h = self.mlp(h, X2)
         return h
 

@@ -14,6 +14,8 @@ from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EmbeddingPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EncoderPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import AggregatorPresets
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import MLPPresets
+from qiqc.presets.v1_8_1_bilsm_w2v_rnd import FeaturesDensePresets
+
 
 from qiqc.presets.v1_8_1_bilsm_w2v_rnd import PreprocessorPresets
 #from qiqc.presets.v1_8_1_bilsm_w2v_rnd import EnsemblerPresets
@@ -44,13 +46,15 @@ class ExperimentConfigBuilder(ExperimentConfigBuilderBase):
             Encoder,
             Aggregator,
             MLP,
+            FeatureDense
         ]
 
 def build_model(config, embedding_matrix, n_sentence_extra_features):
     # it's help of the class declared and pass keyword as arguments we are resolved references ...
     embedding = Embedding(config, embedding_matrix)
     encoder = Encoder(config, embedding.out_size)
-    aggregator = Aggregator(config)
+    #aggregator = Aggregator(config)
+    feature_dense = FeatureDense(config, encoder.out_size + n_sentence_extra_features)
     mlp = MLP(config, encoder.out_size + n_sentence_extra_features)
     out = nn.Linear(config.mlp_n_hiddens[-1], 1)
     lossfunc = nn.BCEWithLogitsLoss()
@@ -58,7 +62,8 @@ def build_model(config, embedding_matrix, n_sentence_extra_features):
     return BinaryClassifier(
         embedding=embedding,
         encoder=encoder,
-        aggregator=aggregator,
+        #aggregator=aggregator,
+        feature_dense=feature_dense,
         mlp=mlp,
         out=out,
         lossfunc=lossfunc,
@@ -103,6 +108,10 @@ class Aggregator(AggregatorPresets):
 
 class MLP(MLPPresets):
     pass
+
+class FeatureDense(FeaturesDensePresets):
+    pass
+
 
 #
 # class Ensembler(EnsemblerPresets):

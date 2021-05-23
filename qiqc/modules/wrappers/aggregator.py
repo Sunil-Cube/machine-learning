@@ -12,6 +12,9 @@ class AggregatorWrapper(NNModuleWrapperBase):
         self.config = config
         self.module = self.registry[config.aggregator]()
 
+
+
+
     @classmethod
     def add_args(cls, parser):
         assert isinstance(cls.default_config, dict)

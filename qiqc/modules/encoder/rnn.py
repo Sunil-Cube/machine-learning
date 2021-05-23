@@ -50,7 +50,7 @@ class LSTMEncoder(RNNEncoderBase):
 class GRUEncoder(RNNEncoderBase):
 
     def __init__(self, config, in_size):
-        assert config.encoder_n_layers > 1
+        assert config.encoder_n_layers > 0
         modules = [nn.GRU] * config.encoder_n_layers
         super().__init__(config, modules, in_size)
 

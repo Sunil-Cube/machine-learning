@@ -14,6 +14,7 @@ from qiqc.modules import EmbeddingWrapper
 from qiqc.modules import EncoderWrapper
 from qiqc.modules import AggregatorWrapper
 from qiqc.modules import MLPWrapper
+from qiqc.modules import FeaturesWrapper
 
 
 # =======  Experiment configuration  =======
@@ -107,12 +108,12 @@ class EmbeddingPresets(EmbeddingWrapper):
 class EncoderPresets(EncoderWrapper):
 
     default_config = dict(
-        encoder='lstm',
+        encoder='gru',
     )
     default_extra_config = dict(
         encoder_bidirectional=True,
         encoder_dropout=0.,
-        encoder_n_layers=2,
+        encoder_n_layers=1,
         encoder_n_hidden=128,
     )
 
@@ -131,4 +132,15 @@ class MLPPresets(MLPWrapper):
         mlp_dropout0=0.,
         mlp_bn=True,
         mlp_actfun=nn.ReLU(True),
+    )
+
+class FeaturesDensePresets(FeaturesWrapper):
+
+    default_config = dict(
+        fd_n_hiddens=[128, 128],
+        fd_bn0=False,
+        fd_dropout0=0.,
+        fd_bn=False,
+        fd_actfun=nn.ReLU(True),
+
     )

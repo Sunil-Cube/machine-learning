@@ -1,0 +1,66 @@
+Model architecture
+The main part is 1-layer Bi-GRU with hidden size 128 followed by the concatenation of max pooling, average pooling and first/last positional outputs. Another part is dense layers for statistical features. The outputs of 2 network parts are concatenated, then fed to dense layers.
+
+QuoraModel(
+  (embedding): Embedding(222910, 668, padding_idx=0)
+  (text): RNNBlock(
+    (rnn): GRU(668, 128, batch_first=True, bidirectional=True)
+  )
+  (features_dense): Sequential(
+    (0): Linear(in_features=92, out_features=32, bias=True)
+    (1): ReLU(inplace)
+    (2): Linear(in_features=32, out_features=16, bias=True)
+    (3): ReLU(inplace)
+  )
+  (dense): Sequential(
+    (0): BatchNorm1d(1040, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (1): ReLU(inplace)
+    (2): Dropout(p=0.25)
+    (3): Linear(in_features=1040, out_features=64, bias=True)
+    (4): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU(inplace)
+    (6): Dropout(p=0.1)
+    (7): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+
+
+BinaryClassifier(
+  (embedding): Embedding(
+    (module): Embedding(733, 300)
+    (dropout1d): Dropout(p=0.2, inplace=False)
+  )
+  (encoder): Encoder(
+    (module): GRUEncoder(
+      (rnns): ModuleList(
+        (0): GRU(300, 128, batch_first=True, bidirectional=True)
+      )
+    )
+  )
+  (aggregator): Aggregator(
+    (module): MaxPoolingAggregator()
+  )
+  (mlp): MLP(
+    (layers): Sequential(
+      (0): Linear(in_features=256, out_features=128, bias=True)
+      (1): ReLU(inplace=True)
+      (2): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): Linear(in_features=128, out_features=128, bias=True)
+      (4): ReLU(inplace=True)
+      (5): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (mlp1): MLP(
+    (layers): Sequential(
+      (0): Linear(in_features=256, out_features=128, bias=True)
+      (1): ReLU(inplace=True)
+      (2): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): Linear(in_features=128, out_features=128, bias=True)
+      (4): ReLU(inplace=True)
+      (5): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (out): Linear(in_features=128, out_features=1, bias=True)
+  (lossfunc): BCEWithLogitsLoss()
+)
