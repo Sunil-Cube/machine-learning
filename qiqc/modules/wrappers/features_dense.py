@@ -9,7 +9,7 @@ class FeaturesWrapper(NNModuleWrapperBase):
         super().__init__()
         self.in_size = in_size
         self.config = config
-        assert isinstance(config.mlp_n_hiddens, list)
+        assert isinstance(config.fd_n_hiddens, list)
         layers = []
         if config.fd_bn0:
             layers.append(nn.BatchNorm1d(in_size))
