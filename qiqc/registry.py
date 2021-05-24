@@ -11,6 +11,8 @@ ENCODER_REGISTRY = {}
 AGGREGATOR_REGISTRY = {}
 ATTENTION_REGISTRY = {}
 
+FEATURES_DENSE_REGISTRY = {}
+
 
 def register_preprocessor(name):
     def register_cls(cls):
@@ -64,5 +66,11 @@ def register_aggregator(name):
 def register_attention(name):
     def register_cls(cls):
         ATTENTION_REGISTRY[name] = cls
+        return cls
+    return register_cls
+
+def register_feature_dense(name):
+    def register_cls(cls):
+        FEATURES_DENSE_REGISTRY[name] = cls
         return cls
     return register_cls

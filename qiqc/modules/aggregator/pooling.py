@@ -4,6 +4,16 @@ from torch import nn
 
 from qiqc.registry import register_aggregator
 
+from qiqc.registry import register_feature_dense
+
+@register_feature_dense('max')
+class MaxPoolingFeatureDense(nn.Module):
+
+    def __call__(self, hs, mask):
+        if mask is not None:
+            hs = hs.masked_fill(~mask.unsqueeze(2), -np.inf)
+        h = hs.max(dim=1)[0]
+        return h
 
 @register_aggregator('max')
 class MaxPoolingAggregator(nn.Module):

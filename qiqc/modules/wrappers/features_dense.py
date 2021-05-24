@@ -1,14 +1,18 @@
 import torch
 from torch import nn
-
 from qiqc.modules.wrappers.base import NNModuleWrapperBase
+from qiqc.registry import FEATURES_DENSE_REGISTRY
 
 class FeaturesWrapper(NNModuleWrapperBase):
+
     default_config = None
-    def __init__(self, config, in_size):
+    registry = FEATURES_DENSE_REGISTRY
+
+    def __init__(self, config):
         super().__init__()
-        self.in_size = in_size
+        in_size = config.fd_in_size
         self.config = config
+        self.module = self.registry[config.aggregator]()
         assert isinstance(config.fd_n_hiddens, list)
         layers = []
         if config.fd_bn0:
@@ -26,6 +30,7 @@ class FeaturesWrapper(NNModuleWrapperBase):
             in_size = n_hidden
         self.layers = nn.Sequential(*layers)
 
+
     @classmethod
     def add_args(cls, parser):
         assert isinstance(cls.default_config, dict)
@@ -41,9 +46,10 @@ class FeaturesWrapper(NNModuleWrapperBase):
     def add_extra_args(cls, parser, config):
         pass
 
-    def forward(self, X, X2):
-        h = X
-        if X.shape[1] + X2.shape[1] == self.in_size:
-            h = torch.cat([h, X2], dim=1)
-        h = self.layers(h)
+    def forward(self, X, mask):
+        h = self.module(X, mask)
+        # h = X
+        # if X.shape[1] + X2.shape[1] == self.in_size:
+        #     h = torch.cat([h, X2], dim=1)
+        # h = self.layers(h)
         return h

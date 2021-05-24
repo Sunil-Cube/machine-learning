@@ -54,7 +54,7 @@ def build_model(config, embedding_matrix, n_sentence_extra_features):
     embedding = Embedding(config, embedding_matrix)
     encoder = Encoder(config, embedding.out_size)
     #aggregator = Aggregator(config)
-    feature_dense = FeatureDense(config, encoder.out_size + n_sentence_extra_features)
+    feature_dense = FeatureDense(config)
     mlp = MLP(config, encoder.out_size + n_sentence_extra_features)
     out = nn.Linear(config.mlp_n_hiddens[-1], 1)
     lossfunc = nn.BCEWithLogitsLoss()

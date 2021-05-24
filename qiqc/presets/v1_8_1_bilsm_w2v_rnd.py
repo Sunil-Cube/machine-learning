@@ -137,10 +137,11 @@ class MLPPresets(MLPWrapper):
 class FeaturesDensePresets(FeaturesWrapper):
 
     default_config = dict(
-        fd_n_hiddens=[128, 128],
+        fd_n_hiddens=[32,16],
         fd_bn0=False,
         fd_dropout0=0.,
         fd_bn=False,
         fd_actfun=nn.ReLU(True),
-
+        fd_in_size = 92,
+        aggregator='max',
     )
