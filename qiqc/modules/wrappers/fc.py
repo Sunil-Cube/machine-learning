@@ -20,7 +20,7 @@ class MLPWrapper(NNModuleWrapperBase):
             layers.append(nn.Dropout(config.mlp_dropout0))
         for n_hidden in config.mlp_n_hiddens:
             if config.mlp_bn:
-                layers.append(nn.BatchNorm1d(n_hidden))
+                layers.append(nn.BatchNorm1d(in_size))
             if config.mlp_actfun is not None:
                 layers.append(config.mlp_actfun)
             if config.mlp_dropout > 0:
