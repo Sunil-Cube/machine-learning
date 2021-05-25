@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from sklearn import metrics
 
+from tensorboardX import SummaryWriter
+
 
 def classification_metrics(ys, ts):
     scores = {}
@@ -51,10 +53,21 @@ class ClassificationResult(object):
         self.ts.append(t)
         self.n_trained += len(y)
 
-    def calc_score(self, epoch):
+    def calc_score(self, epoch, trainORvalidation):
+        # Training Loop to visualize Evaluation
+        tb = SummaryWriter('runs/mnist1/'+trainORvalidation)
+
         loss = np.array(self.losses).mean()
+
         self.ys, self.ts = np.concatenate(self.ys), np.concatenate(self.ts)
         score = classification_metrics(self.ys, self.ts)
+
+        tb.add_scalar("Loss", loss, epoch)
+        tb.add_scalar("prec", score['prec'], epoch)
+        tb.add_scalar("ap", score['ap'], epoch)
+        tb.add_scalar("rocauc", score['rocauc'], epoch)
+        tb.add_scalar("threshold", score['threshold'], epoch)
+
         summary = dict(name=self.name, loss=loss, **score)
         if len(score) > 0:
             if self.summary is None:
@@ -66,6 +79,7 @@ class ClassificationResult(object):
             self.best_ys = self.ys
             self.best_ts = self.ts
         self.initialize()
+        tb.close()
 
     def get_dict(self):
         loss, fbeta, epoch = 0, 0, 0

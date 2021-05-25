@@ -245,8 +245,8 @@ def train(config, modules):
                 loss.backward()
                 optimizer.step()
                 train_result.add_record(**output)
-                print("-----------in batch")
-            train_result.calc_score(epoch)
+
+            train_result.calc_score(epoch, 'train')
             _summary.append(train_result.summary.iloc[-1])
 
             # Validation loop
@@ -256,7 +256,7 @@ def train(config, modules):
                     model.eval()
                     loss, output = model.calc_loss(*batch)
                     valid_result.add_record(**output)
-                valid_result.calc_score(epoch)
+                valid_result.calc_score(epoch, 'validation')
                 _summary.append(valid_result.summary.iloc[-1])
 
                 _model = deepcopy(model)
