@@ -672,9 +672,70 @@ another synatax of mask value fill it :: X[~mask] = float('-inf')
 X.max(dim=1)[0]
 
 
+===================================
+
+model-architecture ::
+
+***************************************
+
+embedding = Embedding(config, embedding_matrix)
+
+as per embedding matrix size 1. total to token_ids 2 embedding fix size = 300
+
+embedding.out_size = 300
+
+**********************************************
+we are pass embedding.out_size in encoder ....
+
+encoder = Encoder(config, embedding.out_size) so basically our input size is embedding output size 300 .. we have 2 layer of lstm ..
+
+1. first layer input size is 300, 
+    hidden_size or encoder_n_hidden is getting from config parameter is 128, 
+    n_direction is 2 * hidden_size or encoder_n_hidden = 256
+
+now 2nd time :::  layer input size is 256, 
+  hidden_size or encoder_n_hidden is getting from config parameter is 128,
+  n_direction is 2 * hidden_size = 256 
+
+output size is :: n_direction is 2 * hidden_size  = 256 
 
 
+***********************************************
 
+MLPWrapper :::
+
+
+we are pass out_size in MLPWrapper ....in size  = 256
+
+mlp_n_hiddens is getting from config paramter is [128,128] 
+
+
+1. liner layer :: input size is 256, 128 (value of [128,128] is iter from mlp_n_hiddens)
+
+2. add RELU act-func (without any input and output of size)
+
+3. BatchNorm1d contains mlp_n_hiddens size = 128 hidden layer
+
+4. add dropout layer (without any input and output of size)
+
+now 2nd time in_size = 128 for totdal 4 steps
+
+1. liner layer :: input size is 128, 128 (value of [128,128] is iter from mlp_n_hiddens)
+
+2. add RELU act-func (without any input and output of size)
+
+3. BatchNorm1d contains mlp_n_hiddens size = 128 hidden layer
+
+4. add dropout layer (without any input and output of size)
+
+
+***********************************************
+
+outlayer :::
+
+1 . mlp_n_hiddens is getting from config paramter is [128,128] then select [-1] value
+
+2. 1 value as output layer 
 
 
 
