@@ -782,7 +782,13 @@ path set:: -m models / baseline / v1-8-1-bilstm-w2v-rnd.py (pre-loading part)
 
 
 
+embedding layer :::: basically layer contains  (num_embedding, embedding_dim)  example (10,300)
 
+lstm layer :::: (input_size, hidden_size, number_layer)
+
+liner layer ::: (input_features, output_features)
+
+while we are map - target with model output ..need basic requiment in loss function
 
 
 
