@@ -1,0 +1,47 @@
+1. Pick a probelm you ‘re interested in .
+
+2. Understand the problem
+
+3. Identify your ideal outcome like : Note that the outcome may be quite different from how to assess the model and it’s quality .. our ideal outcome is keeping with the example
+
+4. Understand the evaluation matric : write down your metrics for success and failure with ml system . The failure metrics are important ..
+
+5. Exploratory Data analysis  / Get conclsion about atleast of Baseline model
+
+6. Identify baseline model
+
+7. write down in words theories or assumptions / statistical test for validate of theories ..
+
+8. Choose the algorithm
+
+9. In the algorithm accordingly : clean the data
+
+10. In the algorithm accordingly: scaling the data
+
+11. In the algorithm accordingly: feature transformations
+
+12. In the algorithm accordingly : feature derivations
+
+13. In the algorithm accordingly : cross – validation 
+
+14. In the cross – validation : Do the feature selections 
+
+15. In the cross – validation choose Hyper parameter optimizations like Grid Search
+
+16. Check with data leaks, imbalance
+
+17. Train algorithm for baseline
+
+18. Train many algorithms 
+
+19. Low cost function optimizations process
+
+20. Hyper-parameters tunning 
+
+21. Ensemble -  Combinding different models
+
+22. Evaluation – Manually examines the error / Identify more ways of doing numerical evalucation
+
+23. Finally – model deploment processs / intergration into apps
+
+24. Inference  - new real life leading to model predictions
