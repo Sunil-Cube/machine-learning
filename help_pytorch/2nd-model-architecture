@@ -25,7 +25,6 @@ QuoraModel(
 )
 
 
-
 BinaryClassifier(
   (embedding): Embedding(
     (module): Embedding(733, 300)
@@ -39,16 +38,17 @@ BinaryClassifier(
     )
   )
   (feature_dense): FeatureDense(
+    (module): MaxPoolingFeatureDense()
     (layers): Sequential(
-      (0): Linear(in_features=256, out_features=128, bias=True)
+      (0): Linear(in_features=92, out_features=32, bias=True)
       (1): ReLU(inplace=True)
-      (2): Linear(in_features=128, out_features=128, bias=True)
+      (2): Linear(in_features=32, out_features=16, bias=True)
       (3): ReLU(inplace=True)
     )
   )
   (mlp): MLP(
     (layers): Sequential(
-      (0): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (0): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
       (1): ReLU(inplace=True)
       (2): Dropout(p=0.25, inplace=False)
       (3): Linear(in_features=256, out_features=128, bias=True)
