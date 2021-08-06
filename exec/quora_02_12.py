@@ -44,6 +44,16 @@ sys.path.append('/media/sunil/06930e3e-f4e4-4037-bee5-327c2551e897/Downloads/ker
 import qiqc
 from qiqc.utils import set_seed, load_module
 
+
+def basic_feature_engineering(train, test):
+    # Feature Engineering on Train Data
+    train['freq_qid'] = train.groupby('qid')['qid'].transform('count')
+    train['qlen'] = train['question_text'].str.len()
+    train['n_words'] = train['question_text'].apply(lambda row: len(row.split(" ")))
+    train['numeric_words'] = train['question_text'].apply(lambda row:sum(c.isdigit() for c in row))
+    train['sp_char_words'] = train['question_text'].str.findall(r'[^a-zA-Z0-9]').str.len()
+    return train, test
+
 def load_qiqc(n_rows=None):
     train_df = pd.read_csv('/media/sunil/06930e3e-f4e4-4037-bee5-327c2551e897/Downloads/kernal/quora/train.csv', nrows=n_rows)
     submit_df = pd.read_csv('/media/sunil/06930e3e-f4e4-4037-bee5-327c2551e897/Downloads/kernal/quora/test.csv', nrows=n_rows)
@@ -148,6 +158,10 @@ def train(config, modules):
 
     #train_df, submit_df = load_qiqc(n_rows=config.n_rows)
     train_df, submit_df = load_qiqc(n_rows=50)
+
+    train_df, submit_df = basic_feature_engineering(train_df, submit_df)
+
+
     datasets = build_datasets(train_df, submit_df, config.holdout, config.seed)
 
     train_dataset, test_dataset, submit_dataset = datasets

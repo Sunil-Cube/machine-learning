@@ -1,14 +1,43 @@
+
+ml get multiple output classification with same probability example::::
+
+https://towardsdatascience.com/journey-to-the-center-of-multi-label-classification-384c40229bff
+
+https://glassboxmedicine.com/2019/05/26/classification-sigmoid-vs-softmax/
+
+
+best library for machine learning models::::
+
+https://github.com/EthicalML/awesome-production-machine-learning
+
+https://github.com/josephmisiti/awesome-machine-learning
+
+
+
+
 1. Pick a probelm you ‘re interested in .
+ans. quora-insincere-questions-classification
 
 2. Understand the problem
+ans. on website today is how to handle toxic and divisive content so we wants to tackle this problem head-on to keep their platform a place where users can feel safe sharing their knowledge with the world.  A key challenge is to isolate insincere questions, develop models that identify and flag insincere questions
 
 3. Identify your ideal outcome like : Note that the outcome may be quite different from how to assess the model and it’s quality .. our ideal outcome is keeping with the example
 
+
 4. Understand the evaluation matric : write down your metrics for success and failure with ml system . The failure metrics are important ..
 
-5. Exploratory Data analysis  / Get conclsion about atleast of Baseline model
 
-6. Identify baseline model
+5. Exploratory Data analysis  / Get conclsion about atleast of Baseline model
+ans.  we are added some features as part of features engineering 
+	1. freq_id = frequencey of qid
+	2. qlen = length od qid 
+	3. n_words = number of words in questions
+	4. numeric-words = number of numeric words in question . 
+
+6	Identify baseline model
+
+how to get baseline model - this is very common query but very nice question without checking data just flying with your knowledge of problem statements ... with different alogorithm diversity ..
+
 
 7. write down in words theories or assumptions / statistical test for validate of theories ..
 
