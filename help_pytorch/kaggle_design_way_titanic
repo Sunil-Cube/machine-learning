@@ -1,0 +1,95 @@
+
+
+
+In the algorithm accordingly: feature transformations
+In the algorithm accordingly : feature derivations
+In the algorithm accordingly : cross – validation 
+In the cross – validation : Do the feature selections 
+In the cross – validation choose Hyper parameter optimizations like Grid Search
+Check with data leaks, imbalance
+Train algorithm for baseline
+Train many algorithms 
+Low cost function optimizations process
+Hyper-parameters tunning 
+Ensemble -  Combinding different models
+Evaluation – Manually examines the error / Identify more ways of doing numerical evalucation
+Finally – model deploment processs / intergration into apps
+Inference  - new real life leading to model predictions
+
+
+
+1 Pick a probelm you ‘re interested in .
+
+- we can pick titanic dataset and create model that predicts which passengers survived the titanic shipwreck...
+
+
+2 Understand the problem
+
+- titanic : machine learning from Disaster predict survival on the titanic and get familliars with machine learning basic ...
+
+
+3  Identify your ideal outcome like : Note that the outcome may be quite different from how to assess the model and it’s quality .. our ideal outcome is keeping with the example
+
+- it is job to predict if a passenger survived the sinking of the titanic or not .. for each in the test set , you must predict a 0 and 1 value for the variable .
+
+- (in competition and real world both scenario are different but lets define to baseline model)
+
+example :
+
+PassengerId		Survived
+892				0
+893				1
+894				0
+
+
+4	Understand the evaluation matric : write down your metrics for success and failure with ml system . The failure metrics are important ..
+
+
+- (in competition and real world both scenario are different but lets define to baseline model)
+
+- our score is the percentage of passengers you correctly predict. this is knows as accuracy ..
+
+5 	Exploratory Data analysis  / Get conclsion about atleast of Baseline model
+
+-  exploratory data analysis is basically helps us to identify baseline model esaily , also we can use excel tool to just view data in different ways . in EDA we can plot numerical / categorical feature and study Correlations .
+
+
+5	Identify baseline model
+
+how to get baseline model - this is very common query but very nice question without checking data just flying with your knowledge of problem statements ... with different alogorithm diversity ..
+
+
+5  write down in words theories or assumptions / statistical test for validate of theories ..
+
+
+6	Choose the algorithm
+
+-  will use a simple logistic regression  that takes features in X and create a regression line . this is done using logisticRegression module in Sckit-Learn .
+
+
+7 In the algorithm accordingly : clean the data
+
+in clean part of the dataset we have follow bit levels steps :
+
+1. handle missing data - missing categorical , missing numeric data
+2. remove unwanted observation - duplicate observations , irrelevant observations .
+
+8 In the algorithm accordingly: scaling the data
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+

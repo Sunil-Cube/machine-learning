@@ -1,0 +1,185 @@
+
+
+In the cross – validation : Do the feature selections 
+In the cross – validation choose Hyper parameter optimizations like Grid Search
+
+Check with data leaks, imbalance
+Train algorithm for baseline
+Train many algorithms 
+Low cost function optimizations process
+Hyper-parameters tunning 
+Ensemble -  Combinding different models
+Evaluation – Manually examines the error / Identify more ways of doing numerical evalucation
+
+Finally – model deploment processs / intergration into apps
+Inference  - new real life leading to model predictions
+
+
+
+1.Pick a probelm you ‘re interested in .
+
+- we can pick What's Cooking? and create model that predicts Use recipe ingredients to categorize the cuisine
+
+
+
+2. Understand the problem
+
+- what's cooking  : some of our strongest geographic and cultural associations are tied to a region's local foods . this playground competitions asks you to predict the category of a dish's cuisine given a list of it's ingredients . 
+
+
+
+3. Identify your ideal outcome like : Note that the outcome may be quite different from how to assess the model and it’s quality .. our ideal outcome is keeping with the example
+
+- ideal outcome is list of it's ingredients is best match to recipe categorize the cuisine .
+
+
+4. Understand the evaluation matric : write down your metrics for success and failure with ml system . The failure metrics are important ..
+
+- Evaluated on the categorization accuracy (the percent of dishes that you correctly classify)
+
+
+5. Exploratory Data analysis  / Get conclsion about atleast of Baseline model
+
+-  exploratory data analysis is basically helps us to identify baseline model esaily , also we can use excel tool to just view data in different ways . in EDA we can plot numerical / categorical feature and study Correlations .
+
+
+6. Identify baseline model
+
+how to get baseline model - this is very common query but very nice question without checking data just flying with your knowledge of problem statements ... with different alogorithm diversity ..
+
+
+
+7  write down in words theories or assumptions / statistical test for validate of theories ..
+
+based on theories or assumptions using statistical test we can helps us to easily recall the key points about machine learning probelm statement
+
+	-> using data analysis , maxmium salts counts are there
+	-> than olive oil and onions counts are there 
+
+
+
+8 Choose the algorithm
+
+-  will use a simple logistic regression  that takes features in X and create a regression line . this is done using logisticRegression module in Sckit-Learn .
+
+
+
+9 In the algorithm accordingly : clean the data
+
+in clean part of the dataset we have follow bit levels steps :
+
+-> remove unwanted observations - duplicate observations , irrelevant observations 
+-> fix structural errors
+-> fillter unwanted outliers
+-> handle missing data- missing categorical data, missing numberic data
+
+
+10 In the algorithm accordingly: scaling the data
+
+
+When to scale ::::::::
+
+on @stackoverflow https://stats.stackexchange.com/questions/244507/what-algorithms-need-feature-scaling-beside-from-svm
+in general , algorithms that exploit distance or similarties between data samples such as k-nn and SVM are sensitive to feature transformations 
+
+on @Medium artical link : https://medium.com/greyatom/why-how-and-when-to-scale-your-features-4b30ab09db5e
+
+Some examples of algorithms where feature scaling matters are:
+- k-nearest neighbors
+- Principal Component Analysis(PCA)
+- gradient descent
+- Tree based models
+- Linear Discriminant Analysis(LDA), Naive Bayes
+
+on @youtube vide no 10.. (win kaggle) and KDnuggets :: Some models are influenced by feature scaling , while other are not .. 
+
+-non-tree models can be easily influenced by feature scalling 
+
+-- liner models
+-- nearest neighbor classifiers
+-- neural networks
+
+
+- tree based models are not influenced by feature scalling 
+
+--old decision trees
+--random forests
+--gradient boosted trees
+
+
+How to Scale Features:
+- standardisation 
+- mean normalisation
+- min-max scaling
+- unit vector
+
+
+
+
+11 In the algorithm accordingly: feature transformations
+
+feature transformation in simply a function that transforms features from one represenation to antoher . but why would we transform our features ?
+
+- data types are not suitable to be fed into a machine learning algorithm 
+- features values may cause problems during the learning process (data represented in different scales)
+
+@In this article we will focus on two main transformation techniques: https://towardsdatascience.com/apache-spark-mllib-tutorial-7aba8a1dce6e
+
+- Handling categorical variables , Feature scaling,
+
+on @youtube vide no 11.. (win kaggle)
+
+- label encoding maps categories to numbers
+- fequency encoding maps categories to their frequencies
+- label and frequency encodings are often used for tree-based models
+- one hot encoding is often used for non-tree based models and KNN
+
+on @towardsdatascience https://towardsdatascience.com/data-preparation-for-machine-learning-cleansing-transformation-feature-engineering-d2334079b06d
+
+
+
+12 In the algorithm accordingly : feature derivations
+
+in many probelm this is most important thing ..
+- text classification : generate the corpos of words and make TFIDF 
+- sounds : convert sounds to frequenceies throught fourier  transformations 
+- images : make convolution. E.g break down an image to pixels and extract different parts of the image.
+- interactions : really important for some models . for our algorithm tool. e.g have variable that show if an item is popular and the customers likes it .
+- other that makes sense : similarity features , dimensionality reduction features or even predictions from other models as features .
+
+
+
+13 In the algorithm accordingly : cross – validation 
+
+Five reasons why you should use cross-validation 
+- use all your data 
+- get more metrics
+- use model stacking 
+- work with dependent / grouped data
+- parameters fine - tuning 
+
+14 In the cross – validation : Do the feature selections 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
