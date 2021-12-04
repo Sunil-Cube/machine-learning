@@ -21,6 +21,15 @@
 20. numpy.fill()
 21. numpy.copy()
 
+
+22. numpy.flatten()
+23. numpy.reshape()
+24. numpy.dot()
+25. numpy.transpose()
+25. numpy.vstack
+26. numpy.hstack
+
+
 1. torch.sigmoid
 2. torch.cat
 3. torch.optim.Adam
