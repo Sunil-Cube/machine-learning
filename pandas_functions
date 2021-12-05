@@ -1,0 +1,92 @@
+
+
+https://www.analyticsvidhya.com/blog/2021/05/pandas-functions-13-most-important/
+
+https://medium.com/analytics-vidhya/top-20-pandas-functions-which-are-commonly-used-for-exploratory-data-analysis-3cb817a60f46
+
+https://dataconomy.com/2015/03/14-best-python-pandas-features/
+
+
+
+1. pandas.head()
+
+2. pandas.tail()
+
+3. pandas.info()
+
+4. pandas.dtypes
+
+5. pandas.shape()
+
+6. pandas.size()
+
+7. pandas.describe() - statistical summary 
+
+8. pandas.sample() - Sample method allows you to select values randomly from a Series or DataFrame. 
+
+9. pandas.isnull() - dentifying Missing Values Isnull
+
+10. pandas.Isna().any() - isna function returns a dataframe filled with boolean values with true indicating missing values.
+
+11. pandas.isnull().sum() - Identifying Missing Values Sum
+
+12. pandas.nunique() - Nunique counts the number of unique entries over columns or rows.
+
+13. pandas.index() - given element from the start of the list and returns the lowest index where the element appears.
+
+14. pandas.columns() - give alll columns .
+
+15. pandas.Memory_usage() - returns how much memory each column uses in bytes .
+
+16. pandas.nsmallest() and pandas.nlargest()
+
+17. pandas.Loc and pandas.iloc 
+
+18. pandas.groupby : pandas groupby function is a great tool in exploring the data
+
+
+19. pandas.sor_index() method ::: Using the sort_index() method, by passing the axis arguments and the order of sorting, DataFrame can be sorted
+
+20. pandas.Dropna() ::: The dropna () function is used to remove a row or a column from a dataframe which has a NaN or no values in it.
+
+21. pandas.query() :: filter a dataframe based on a condition or apply a mask to get certain values. One easy way to filter a dataframe is query function.
+
+22. pandas.insert() ::  we want to add a new column to a dataframe, it is added at the end by default. However, pandas offers the option to add the new column in any position using insert function.
+
+
+23. pandas.read_csv()
+
+24. pandas.astype() - Type Conversion of Data columns
+
+25. pandas.to_datetime() - to_datetime() converts a Python object to datetime format. 
+
+26. pandas.value_counts() - value_counts() returns a Pandas Series containing the counts of unique values. 
+
+27. pandas.drop_duplicates() - drop_duplicates() returns a Pandas DataFrame with duplicate rows removed. 
+
+28. pandas.merge() - is used to merge 2 Pandas DataFrame objects or a DataFrame and a Series object on a common column (field). 
+
+29. pandas.sort_values - sort_values() is used to sort column in a Pandas DataFrame (or a Pandas Series) by values in ascending or descending order. 
+
+30. fillna - fillna() helps to replace all NaN values in a DataFrame or Series by imputing these missing values with more appropriate values.
+
+31. pandas.rename :: RENAME SPECIFIC COLUMNS
+
+32. pandas.map
+
+33. pandas.apply
+
+34. pandas.unique
+
+35. pandas.crosstab
+
+
+
+
+
+
+
+
+
+
+
