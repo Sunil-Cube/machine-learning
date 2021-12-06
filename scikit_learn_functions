@@ -1,0 +1,130 @@
+
+
+https://github.com/justmarkham/scikit-learn-tips
+
+
+https://medium.com/@simonprdhm/9-scikit-learn-tips-for-data-scientist-2a84ffb385ba
+
+https://towardsdatascience.com/tips-and-tricks-of-sci-kit-learn-that-will-amaze-you-ce791431552e
+
+
+
+
+preprocessing
+=============
+
+from sklearn import preprocessing
+
+
+from sklearn.ensemble import RandomForestClassifier
+
+
+Pipeline
+===============
+from sklearn.pipeline import Pipeline
+
+
+metrics
+================
+
+from sklearn.metrics import make_scorer, accuracy_score, roc_auc_score
+
+from sklearn.metrics import accuracy_score, log_loss, mean_absolute_error
+
+
+
+model_selection
+========================
+
+from sklearn.model_selection import GridSearchCV
+
+from sklearn.model_selection import train_test_split
+
+
+cross_validation
+=============
+
+from sklearn.cross_validation import KFold
+
+from sklearn.cross_validation import StratifiedShuffleSplit
+
+
+compose
+===============
+from sklearn.compose import make_column_transformer
+
+
+
+clone
+====================
+from sklearn import clone
+
+
+
+discriminant_analysis
+=======================
+
+from sklearn.discriminant_analysis
+
+
+
+decomposition
+========================
+
+from sklearn.decomposition import PCA
+
+
+datasets
+===================
+sklearn.datasets.load_iris
+
+
+
+feature_extraction
+=====================
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+feature_selection
+=========================
+
+from sklearn.feature_selection.univariate_selection import SelectKBest, chi2, f_classif
+
+
+externals
+===========
+
+from sklearn.externals.six import StringIO 
+
+from sklearn.externals import joblib
+
+
+experimental
+==============
+
+from sklearn.experimental import enable_iterative_imputer
+
+
+inspection
+==================
+from sklearn.inspection import PartialDependenceDisplay
+
+
+impute
+===============
+from sklearn.impute import SimpleImputer
+
+
+utils
+==============
+from sklearn.utils import check_X_y, check_array
+
+
+Base
+==========
+from sklearn.base import BaseEstimator, TransformerMixin
+
+
+
+
+
