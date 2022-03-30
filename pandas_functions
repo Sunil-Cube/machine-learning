@@ -84,6 +84,15 @@ https://dataconomy.com/2015/03/14-best-python-pandas-features/
 
 37.pandas.at() || pandas.iat()
 
+38. pandas.drop - Dropping columns (pandas.drop([‘points’, ‘country’], axis=1, inplace=True))
+
+39. pandas.median() 
+
+40. pandas.quantile
+
+
+
+
 
 
 
